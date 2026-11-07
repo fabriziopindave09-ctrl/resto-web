@@ -4,144 +4,380 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Resto: gestión gastronómica</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&display=swap">
+<meta name="theme-color" content="#0f766e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Resto">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <style>
-:root{--bg:#eef2f5;--sf:#fff;--tx:#10202e;--mt:#5b6b7a;--bd:#d5dde4;--fill:#10202e;--fx:#fff;--ok:#0e7a4d;--wa:#b4650a;--hd:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d151c;--sf:#15212b;--tx:#e8eef3;--mt:#8fa1b1;--bd:#26343f;--fill:#2b6f9e;--ok:#1f9d6a;--wa:#e0952f;--hd:#15212b}}
-:root[data-theme="dark"]{--bg:#0d151c;--sf:#15212b;--tx:#e8eef3;--mt:#8fa1b1;--bd:#26343f;--fill:#2b6f9e;--ok:#1f9d6a;--wa:#e0952f;--hd:#15212b}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--tx);font:500 17px/1.35 'Barlow Semi Condensed',system-ui,-apple-system,'Segoe UI',sans-serif}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--hd);z-index:10}
-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--hd);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;padding:10px 14px;flex-wrap:wrap}
-.brand{font-weight:700;font-size:22px;margin-right:auto}
-nav{display:flex;gap:6px;flex-wrap:wrap}
-button,input{font:inherit;color:inherit}
-button{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:10px 14px;cursor:pointer;min-height:44px}
-input{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:10px;min-height:44px;min-width:0;width:130px}
-button:focus-visible,input:focus-visible{outline:3px solid var(--wa);outline-offset:2px}
+:root{--bg:#f2f5f9;--sf:#fff;--sf2:#f6f8fb;--tx:#0f1b2a;--mt:#566577;--bd:#dce3ec;--ac:#0f766e;--acx:#fff;--acs:#dff3f1;--ok:#0f7b4f;--oks:#e1f4ea;--wa:#9a5200;--was:#fdf0dc;--dn:#b42318;--rs:#6a3dc0;--rss:#ece6fa;--sh:0 1px 2px rgba(15,27,42,.06),0 6px 18px rgba(15,27,42,.06);--r:14px;box-sizing:border-box}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1118;--sf:#131c26;--sf2:#182430;--tx:#e7edf3;--mt:#93a4b5;--bd:#243240;--ac:#2dd4bf;--acx:#04201c;--acs:#0f2e2b;--ok:#34d399;--oks:#0f2a20;--wa:#fbbf24;--was:#2e2410;--dn:#f87171;--rs:#b79cff;--rss:#241c3a;--sh:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.3)}}
+:root[data-theme="dark"]{--bg:#0b1118;--sf:#131c26;--sf2:#182430;--tx:#e7edf3;--mt:#93a4b5;--bd:#243240;--ac:#2dd4bf;--acx:#04201c;--acs:#0f2e2b;--ok:#34d399;--oks:#0f2a20;--wa:#fbbf24;--was:#2e2410;--dn:#f87171;--rs:#b79cff;--rss:#241c3a;--sh:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.3)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:500 16px/1.4 Inter,system-ui,-apple-system,'Segoe UI',sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+.ic{width:1.25em;height:1.25em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+button{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:0 14px;cursor:pointer;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;transition:background .15s,border-color .15s,transform .05s}
+button:hover:not(:disabled){background:var(--sf2);border-color:var(--mt)}
+button:active:not(:disabled){transform:scale(.98)}
+input,select{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:0 12px;min-height:44px;min-width:0;width:140px}
+select{width:auto}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
 button:disabled{opacity:.45;cursor:not-allowed}
-button.on,.pri{background:var(--fill);color:#fff;border-color:var(--fill)}
-.badge{background:var(--wa);color:#fff;border-radius:99px;padding:0 8px;margin-left:6px;font-size:14px}
-main{padding:14px;max-width:1100px;margin:auto}
-h2,h3{margin:0 0 10px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
-.tbl{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:100px;padding:12px;text-align:left}
-.tbl b{font-size:30px;line-height:1}
-.tbl.busy{background:var(--fill);color:#fff;border-color:var(--fill)}
-.tbl.rdy{background:var(--ok);border-color:var(--ok);color:#fff;animation:p 2s ease-in-out infinite}
-@keyframes p{50%{opacity:.75}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important}}
-.split{display:grid;gap:14px;grid-template-columns:1fr}
-@media(min-width:800px){.split{grid-template-columns:1fr 340px}}
-.chips,.acts{display:flex;gap:6px;flex-wrap:wrap}
-.chips{margin-bottom:10px}
-.prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
-.prod{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;min-height:78px}
-.prod small{color:var(--mt);font-size:.8em;line-height:1.2}
-.num{color:var(--mt);font-size:.8em}
-.search{display:block;width:100%;margin-bottom:10px}
-.card{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px}
-.card+.card{margin-top:12px}
-.ln{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd)}
-.ln small{display:block;color:var(--mt)}
-.ln .s-sent{color:var(--wa)}.ln .s-ready{color:var(--ok);font-weight:700}
-.tot{display:flex;justify-content:space-between;font-size:24px;margin:12px 0}
+button.on,.pri{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+button.on:hover:not(:disabled),.pri:hover:not(:disabled){background:var(--ac);filter:brightness(1.08);border-color:var(--ac)}
+.ghost{background:transparent}
+.dng{color:var(--dn)}
+.ib{padding:0;width:44px}
+/* header + nav */
+.hd{position:sticky;top:0;z-index:20;background:var(--sf);border-bottom:1px solid var(--bd);padding:calc(8px + env(safe-area-inset-top,0px)) 16px 8px;display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.01em}
+.logo{width:36px;height:36px;border-radius:10px;background:var(--ac);color:var(--acx);display:grid;place-items:center}
+.nav{display:flex;gap:4px;margin-left:12px}
+.nav button{border:0;background:transparent;color:var(--mt);position:relative;border-radius:10px}
+.nav button:hover:not(:disabled){background:var(--sf2)}
+.nav button.on{background:var(--acs);color:var(--ac)}
+.badge{position:absolute;top:2px;right:2px;min-width:20px;height:20px;border-radius:99px;background:var(--wa);color:var(--sf);font-size:12px;font-weight:700;display:grid;place-items:center;padding:0 5px}
+.sp{margin-left:auto}
+.hr{display:flex;align-items:center;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:4px 12px;font-size:13px;font-weight:600;min-height:32px}
+.chip.off{background:var(--was);color:var(--wa)}
+.who{background:var(--sf2);border:1px solid var(--bd)}
+.who small{color:var(--mt);font-weight:500}
+main{padding:18px 16px 32px;max-width:1120px;margin:auto}
+h2,h3{margin:0 0 10px;letter-spacing:-.01em}
+h2{font-size:22px}h3{font-size:17px;display:flex;align-items:center;gap:8px}
 .mt{color:var(--mt)}
-.top{display:flex;align-items:center;gap:8px;margin:6px 0}
-.top i{display:block;height:8px;background:var(--fill);border-radius:4px}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
+.card+.card{margin-top:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.split{display:grid;gap:16px;grid-template-columns:minmax(0,1fr);align-items:start}.split>*{min-width:0}
+@media(min-width:900px){.split{grid-template-columns:minmax(0,1fr) 360px}.aside{position:sticky;top:84px}}
+.chips,.acts{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chips{margin-bottom:12px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.chips button{flex:none;min-height:38px;border-radius:99px}
+.hint{font-size:13px;color:var(--mt)}
+/* tables */
+.tbl{--st:var(--ok);flex-direction:column;align-items:stretch;justify-content:space-between;gap:10px;min-height:118px;padding:12px 14px;text-align:left;border-radius:var(--r);border-left:6px solid var(--st);box-shadow:var(--sh);font-weight:500}
+.tbl .tn{font-size:36px;font-weight:700;line-height:1}
+.tbl .row{display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+.tbl .det{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tbl.busy{--st:var(--ac)}.tbl.resv{--st:var(--rs)}
+.tbl.rdy{--st:var(--ok);background:var(--oks);animation:p 1.8s ease-in-out infinite}
+.tbl.add{border:2px dashed var(--bd);border-left:2px dashed var(--bd);box-shadow:none;background:transparent;color:var(--mt);align-items:center;justify-content:center}
+@keyframes p{50%{box-shadow:0 0 0 5px color-mix(in srgb,var(--ok) 25%,transparent)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--st);background:color-mix(in srgb,var(--st) 14%,var(--sf));padding:3px 9px;border-radius:99px;white-space:nowrap}
+.pill .ic{width:14px;height:14px}
+.tbl.rdy .pill{background:var(--sf)}
+.banner{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--rss);color:var(--rs);border-radius:12px;padding:10px 14px;margin-bottom:12px;font-weight:600}
+.banner button{margin-left:auto;min-height:36px}
+/* products */
+.search{position:relative;margin-bottom:12px}
+.search .ic{position:absolute;left:12px;top:12px;color:var(--mt)}
+.search input{width:100%;padding-left:40px}
+.prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.prod{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:3px;text-align:left;min-height:96px;padding:12px;font-weight:600;border-radius:12px}
+.prod small{color:var(--mt);font-size:12px;line-height:1.25;font-weight:400}
+.prod b{margin-top:auto;color:var(--ac);font-size:16px}
+.num{color:var(--mt);font-size:12px;font-weight:500}
+/* lines */
+.ln{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.ln:last-child{border-bottom:0}
+.ln small{display:block;color:var(--mt);font-weight:500}
+.ln .s-sent{color:var(--wa)}.ln .s-ready{color:var(--ok);font-weight:700}
+.ln .acts button{min-height:40px;width:40px;padding:0}
+.ln .acts button.pri{width:auto;padding:0 12px}
+.row2{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:3px 0}
+.tot{display:flex;justify-content:space-between;align-items:baseline;font-size:26px;font-weight:700;margin:10px 0}
+.tot span{font-size:15px;font-weight:600;color:var(--mt)}
+.sep{border-top:1px dashed var(--bd);margin:14px 0}
+.lbl{font-size:13px;font-weight:600;color:var(--mt);margin:12px 0 6px;display:flex;align-items:center;gap:6px}
+.stp{display:flex;align-items:center;gap:10px}
+.stp b{min-width:28px;text-align:center;font-size:20px}
+.stp button{width:44px;padding:0}
+.paym{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.share{background:var(--acs);color:var(--ac);border-radius:12px;padding:10px 12px;font-weight:700;display:flex;justify-content:space-between;margin:10px 0}
+.paid{font-size:14px;color:var(--ok);font-weight:600}
+.big{width:100%;min-height:50px;font-size:17px}
+/* reports */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:14px}
+.kpi{display:flex;flex-direction:column;gap:4px}
+.kpi h2{margin:0;font-size:26px}
+.top{display:flex;align-items:center;gap:10px;margin:8px 0}
+.top span{flex:0 0 40%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top i{display:block;height:10px;background:var(--ac);border-radius:5px}
 .kit .late{color:var(--wa);font-weight:700}
+/* forms */
+.form{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+.form label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600;color:var(--mt)}
+.rtag{width:44px;height:44px;border-radius:12px;background:var(--rss);color:var(--rs);display:grid;place-items:center;font-weight:700;font-size:20px;flex:none}
+.ln .who2{display:flex;align-items:center;gap:12px}
+.ok-t{color:var(--ok)}
+/* login */
+.lg{min-height:100vh;display:grid;place-items:center;padding:20px}
+.lgc{width:100%;max-width:420px}
+.lgc .logo{width:56px;height:56px;border-radius:16px;margin:0 auto 12px}
+.urow{width:100%;justify-content:flex-start;min-height:56px;margin-bottom:8px;text-align:left}
+.urow small{color:var(--mt);font-weight:500;display:block}
+.urow.on small{color:inherit;opacity:.85}
+.err{color:var(--dn);font-weight:600;margin:8px 0 0}
+/* receipt */
+.done{text-align:center;max-width:460px;margin:30px auto}
+.done .ok-i{width:64px;height:64px;border-radius:50%;background:var(--oks);color:var(--ok);display:grid;place-items:center;margin:0 auto 12px}
+.done .ok-i .ic{width:34px;height:34px}
+/* mobile */
+@media(max-width:760px){
+ .nav{position:fixed;left:0;right:0;bottom:0;margin:0;background:var(--sf);border-top:1px solid var(--bd);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:20;justify-content:space-around}
+ .nav button{flex:1;flex-direction:column;gap:2px;font-size:12px;min-height:54px;padding:4px}
+ .badge{right:calc(50% - 26px)}
+ main{padding-bottom:100px}
+ .who .nm,.brand .bn{display:none}
+ .grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+}
+/* print (thermal 80mm) */
+#prt{display:none}
+@media print{
+ @page{size:80mm auto;margin:0}
+ html,body{background:#fff!important;color:#000!important}
+ body>*:not(#prt){display:none!important}
+ #prt{display:block;width:72mm;margin:0 auto;padding:4mm 0 8mm;font:12px/1.35 'Courier New',ui-monospace,monospace;color:#000}
+ #prt .t-c{text-align:center}#prt .t-b{font-weight:700}#prt .t-lg{font-size:15px}#prt .t-xl{font-size:26px;font-weight:700;text-align:center;margin:4px 0}
+ #prt .t-hr{border-top:1px dashed #000;margin:6px 0}
+ #prt .t-row{display:flex;justify-content:space-between;gap:8px}
+ #prt .t-row span:first-child{flex:1;word-break:break-word}
+ #prt .t-it{font-size:16px;font-weight:700;margin:4px 0}
+}
 </style>
 </head>
 <body>
 <div id="app"></div>
+<div id="prt" aria-hidden="true"></div>
 <script>
-const KEY='resto.v2';
+const KEY='resto.v2',SK='resto.sess';
 const M=n=>new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(n);
 const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const MENU=[["Birras","Clásicas",5000,"Golden, Blonda."],["Birras","Especiales",5500,"Honey, Porter, Scotch, Red Ale."],["Birras","Lupuladas",6800,"Ipa, Apa, Session Ipa."],["Birras","Lupuladas Especiales",7800,"Neipa, Doble Ipa, Floripa."],["Birras","Heineken 1L",13000,"Cervezas Industriales"],["Birras","Heineken 0% lata",6000,"Cervezas Industriales"],["Tragos","Aperol Spritz",14000,"Hielo, rodaja de naranja, aperol y espumante."],["Tragos","Cynar Julep",8500,"Cynar, menta en rama, azúcar, pomelo y hielo."],["Tragos","James Brown",12000,"Jaggermaister, menta en rama, azúcar, pomelo y hielo."],["Tragos","Mojito",8500,"Ron Blanco, menta en rama, lima y soda."],["Tragos","Daiquiri",8000,"Ron y pulpa de frutas."],["Tragos","Campari",8500,"Con pomelo o naranja."],["Tragos","Fernet Branca con Coca-Cola",8500,""],["Tragos","Branca Menta con Sprite",8500,""],["Tragos","Carpano Rosso con pomelo",7000,""],["Tragos","Punt e Mes con pomelo",7000,""],["Tragos","Vermuth Ferroviario",7000,""],["Tragos","Gin Tonic Beefeater",10500,""],["Tragos","Gin Tonic Tanqueray",10500,""],["Tragos","Gin Príncipe de los Apóstoles",8500,""],["Tragos","Gin tirado",8500,""],["Tragos","Negroni",8500,"Gin, Campari, vermuth rosso, chorro de soda, hielo y rodaja de naranja."],["Tragos","Old Fashioned",9500,"Whiskey, bitter, cáscara de naranja, hielo y azúcar."],["Tragos","Coche Bomba",10000,"Cerveza negra, whiskey y Baileys."],["Tragos","Lemon Beat",7500,"Cachaça, miel y limón."],["Tragos","Baileys Frozen",10000,"Baileys, Ron y helado americano."],["Tragos","Speed (Tragos)",5000,""],["Tragos","Medidas (Ron - Fernet - Campari)",7000,""],["Tragos","Medidas (Jagger - Baileys - Gin)",10000,""],["Tragos","Caipirinha",7500,""],["Tragos","Caipiroshka",7500,""],["Tragos","Gancia",7500,"Sprite y limón"],["Tragos","Cuba Libre",8500,""],["Bebidas","Jack Daniels",14000,"Whisky"],["Bebidas","J&B",10000,"Whisky"],["Bebidas","Jameson",10000,"Whisky"],["Bebidas","Johnnie Walker Red Label",10000,"Whisky"],["Bebidas","Santa Julia Malbec 750cc",15000,"Vino"],["Bebidas","Santa Julia Chardonnay 750cc",15000,"Vino"],["Bebidas","Etiqueta del Mes",18000,"Vino"],["Bebidas","Copa de vino",5500,"Vino"],["Bebidas","Extra Brut 187 / 750",13000,"Champagne"],["Bebidas","Gaseosas línea Coca-Cola",4000,"Bebidas sin Alcohol"],["Bebidas","Speed (Bebidas)",5000,"Bebidas sin Alcohol"],["Bebidas","Agua con y sin gas",4000,"Bebidas sin Alcohol"],["Bebidas","Agua saborizada",4000,"Bebidas sin Alcohol"],["Bebidas","Exprimido",5500,"Bebidas sin Alcohol"],["Bebidas","Limonada/Naranjada",5500,"Bebidas sin Alcohol"],["Bebidas","Licuados",6500,"Bebidas sin Alcohol"],["Bebidas","Milkshake",8500,"Bebidas sin Alcohol"],["Tapeos","Rabas",22500,""],["Tapeos","Langostinos rebozados",21000,""],["Tapeos","Triangulitos de muzzarella",13000,""],["Tapeos","Supremitas pastora",18500,""],["Tapeos","Aros de cebolla + dip",5000,""],["Tapeos","Empanadas x 2",7000,""],["Tapeos","Golden chicken más tres salsas",11000,"Barbacoa picante/ alioli / Cheddar."],["Tapeos","Salsas dip. extra",3000,"Barbacoa picante/ alioli / Cheddar."],["Tapeos","Tablita de fiambre para dos",26000,"Queso / salamin / crudo / longaniza."],["Tapeos","Brusquetas (dos a elección)",11000,"Crudo y tomate seco / Morcilla, queso crema y verdeo / Roquefort y nuez."],["Tapeos","Ravioles James B.",9000,"Ravioles de verdura fritos: a la provenzal, con dip de salsa golf y morrón."],["Tapeos","Salchis Pop",16000,"Salteado de salchicha parrillera, cebolla, ajo, verdeo y tomates secos con queso al gratin."],["Tapeos","Milanesitas + Dip",15000,""],["Tapeos","Tortilla de Papa",9500,""],["Tapeos","Buñuelos de Acelga",9500,""],["Tapeos","Tequeños de queso (3) + dip",5500,""],["Tapeos","Papas Snack",2500,""],["Tapeos","Cazuela Cherrys",5000,""],["Tapeos","Cazuela Pategras",5000,""],["Tapeos","Cazuela De Berenjenas",5000,""],["Tapeos","Cazuelita de mani",0,""],["Papas","Papas Solas",8000,""],["Papas","Papas A Caballo (2 h.f.)",10000,""],["Papas","Papas Calavera",13000,"Panceta, cheddar y verdeo."],["Papas","Papas Mostaza con miel / Barbacoa picante",12000,""],["Papas","Papas A los tres quesos con jamón",12500,""],["Papas","Papas Veggies",13000,"Berenjenas, cebolla caramelizada, cherrys confitados y morrón."],["Papas","Papas Combinadas",13000,"2 salsas a elección"],["Papas","Papas Fungi",13000,"Champignon, cebolla, ajito y reduccion de cerveza honey."],["Pizzas","Pizza Muzza",20000,""],["Pizzas","Pizza Muzza (1/2)",10500,""],["Pizzas","Pizza Jamón y morrón",26000,""],["Pizzas","Pizza Jamón y morrón (1/2)",13500,""],["Pizzas","Pizza Fugazza con muzza",22000,""],["Pizzas","Pizza Fugazza con muzza (1/2)",11500,""],["Pizzas","Pizza Anchoas",28000,""],["Pizzas","Pizza Anchoas (1/2)",14500,""],["Pizzas","Pizza Napolitana",26000,""],["Pizzas","Pizza Napolitana (1/2)",13500,""],["Pizzas","Pizza Capresse",26000,""],["Pizzas","Pizza Capresse (1/2)",13500,""],["Pizzas","Pizza Roquefort y nuez",28000,""],["Pizzas","Pizza Roquefort y nuez (1/2)",14500,""],["Pizzas","Pizza Calabresa",26000,""],["Pizzas","Pizza Calabresa (1/2)",13500,""],["Pizzas","Pizza Tres quesos con jamón",26000,""],["Pizzas","Pizza Tres quesos con jamón (1/2)",13500,""],["Pizzas","Pizza Pollo al verdeo",26000,""],["Pizzas","Pizza Pollo al verdeo (1/2)",13500,""],["Pizzas","Pizza Pollo con salsa golf",26000,""],["Pizzas","Pizza Pollo con salsa golf (1/2)",13500,""],["Pizzas","Pizza Rúcula y crudo",28000,""],["Pizzas","Pizza Rúcula y crudo (1/2)",14500,""],["Pizzas","Pizza Panceta y ajíes",28000,""],["Pizzas","Pizza Panceta y ajíes (1/2)",14500,""],["Pizzas","Pizza Panceta y huevo",28000,""],["Pizzas","Pizza Panceta y huevo (1/2)",14500,""],["Pizzas","Pizza Jamon y anana",28000,""],["Pizzas","Pizza Jamon y anana (1/2)",14500,""],["Pizzas","Pizza Palmitos",28000,""],["Pizzas","Pizza Palmitos (1/2)",14500,""],["Hamburguesas","Hamburguesa Rocky",17000,"Queso, roquefort y rúcula."],["Hamburguesas","Hamburguesa Calavera",17000,"Cheddar, panceta y cebolla."],["Hamburguesas","Hamburguesa Cerebro",17000,"Queso, huevo estrellado y ajíes."],["Hamburguesas","Hamburguesa Buzz A",17000,"Guacamole, queso, tomate y rúcula."],["Hamburguesas","Hamburguesa Completa",16000,"Jamón, queso, lechuga, tomate y huevo."],["Sandwichs","Sándwich Crudo, manteca y queso",15000,"Sándwiches Fríos"],["Sandwichs","Sándwich Lechuga, zanahoria, tomate, palta y queso crema",14000,"Sándwiches Fríos"],["Sandwichs","Sándwich Guacamole, queso, tomate y rúcula",15000,"Sándwiches Fríos"],["Sandwichs","Sándwich Jamón y queso",9000,"Sándwiches Calientes"],["Sandwichs","Sándwich Pollo, queso, jamón crudo y ananá",15000,"Sándwiches Calientes"],["Sandwichs","Sándwich Pollo, muzza, roquefort, rúcula, lechuga bañadas en oliva y mix de semillas",14000,"Sándwiches Calientes"],["Sandwichs","Sándwich Cheddar, cebolla caramelizada, tomates secos, berenjenas asadas y aceitunas negras",14000,"Sándwiches Calientes"],["Sandwichs","Sándwich Bondiola a la barbacoa con zanahoria, repollo colorado, mayonesa, mostaza y crema",17500,"Sándwiches Calientes"],["Sandwichs","Sándwich Milanesa",22000,"Sándwiches Calientes"],["Ensaladas","Ensalada Chila Calavera",15000,"Palta, huevo duro, queso tybo, pimienta, zanahoria, nuez picada, cachaça, vinagre y oliva."],["Ensaladas","Ensalada Capresse",15000,"Cherry, albahaca, queso y aceitunas negras."],["Ensaladas","Ensalada Palta",15000,"Palta, lechuga, rucula, cherry, ciboulette y salsa de soja."],["Ensaladas","Ensalada Abraxas",15000,"Pollo, zanahoria, rúcula, ananá, queso, mix de hojas verdes y mix de semillas."],["Ensaladas","Ensalada Leia",15000,"Rúcula, jamón crudo, cherry, parmesano y mix de semillas."],["Ensaladas","Ensalada Margót",15000,"Rúcula, pera, roquefort y nuez."],["Milanesas","Milanesa Sola",19000,""],["Milanesas","Milanesa Napolitana / Capresse",23000,""],["Milanesas","Milanesa Chila Calavera",23000,"Cheddar con cebolla caramelizada, morrón, zanahoria y mix de semillas."],["Milanesas","Milanesa Rocky",23000,"Rúcula con salsa de roquefort y nuez picada."],["Sin T.A.C.C.","Sin T.A.C.C.: Hamburguesa",16000,"Tomate, cebolla, lechuga y papas a caballo."],["Sin T.A.C.C.","Sin T.A.C.C.: Pizza",16000,"Consultar variedades."],["Sin T.A.C.C.","Sin T.A.C.C.: Pollo grillé",19000,"Con guarnición."],["Postres","Helado dos Bochas",8000,""],["Postres","Brownie con Helado",8000,""],["Postres","Don Pedro",9500,""],["Postres","Mousse de Chocolate",5500,""]];
-const demo=()=>({seq:1000,tables:Array.from({length:8},(_,i)=>({id:i+1})),orders:[],menu:MENU.map((p,i)=>({id:i+1,cat:p[0],name:p[1],price:p[2],d:p[3]}))});
-let S,V={tab:'salon',table:null,cat:'Birras',rs:0,q:''};
-function load(){try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!S)S=demo()}
+const MENU=[["Birras","Clásicas",5000,"Golden, Blonda."],["Birras","Especiales",5500,"Honey, Porter, Scotch, Red Ale."],["Birras","Lupuladas",6800,"Ipa, Apa, Session Ipa."],["Birras","Lupuladas Especiales",7800,"Neipa, Doble Ipa, Floripa."],["Birras","Heineken 1L",13000,"Cervezas Industriales"],["Birras","Heineken 0% lata",6000,"Cervezas Industriales"],["Tragos","Aperol Spritz",14000,"Hielo, rodaja de naranja, aperol y espumante."],["Tragos","Cynar Julep",8500,"Cynar, menta en rama, azúcar, pomelo y hielo."],["Tragos","James Brown",12000,"Jaggermaister, menta en rama, azúcar, pomelo y hielo."],["Tragos","Mojito",8500,"Ron Blanco, menta en rama, lima y soda."],["Tragos","Daiquiri",8000,"Ron y pulpa de frutas."],["Tragos","Campari",8500,"Con pomelo o naranja."],["Tragos","Fernet Branca con Coca-Cola",8500,""],["Tragos","Branca Menta con Sprite",8500,""],["Tragos","Carpano Rosso con pomelo",7000,""],["Tragos","Punt e Mes con pomelo",7000,""],["Tragos","Vermuth Ferroviario",7000,""],["Tragos","Gin Tonic Beefeater",10500,""],["Tragos","Gin Tonic Tanqueray",10500,""],["Tragos","Gin Príncipe de los Apóstoles",8500,""],["Tragos","Gin tirado",8500,""],["Tragos","Negroni",8500,"Gin, Campari, vermuth rosso, chorro de soda, hielo y rodaja de naranja."],["Tragos","Old Fashioned",9500,"Whiskey, bitter, cáscara de naranja, hielo y azúcar."],["Tragos","Coche Bomba",10000,"Cerveza negra, whiskey y Baileys."],["Tragos","Lemon Beat",7500,"Cachaça, miel y limón."],["Tragos","Baileys Frozen",10000,"Baileys, Ron y helado americano."],["Tragos","Speed (Tragos)",5000,""],["Tragos","Medidas (Ron - Fernet - Campari)",7000,""],["Tragos","Medidas (Jagger - Baileys - Gin)",10000,""],["Tragos","Caipirinha",7500,""],["Tragos","Caipiroshka",7500,""],["Tragos","Gancia",7500,"Sprite y limón"],["Tragos","Cuba Libre",8500,""],["Bebidas","Jack Daniels",14000,"Whisky"],["Bebidas","J&B",10000,"Whisky"],["Bebidas","Jameson",10000,"Whisky"],["Bebidas","Johnnie Walker Red Label",10000,"Whisky"],["Bebidas","Santa Julia Malbec 750cc",15000,"Vino"],["Bebidas","Santa Julia Chardonnay 750cc",15000,"Vino"],["Bebidas","Etiqueta del Mes",18000,"Vino"],["Bebidas","Copa de vino",5500,"Vino"],["Bebidas","Extra Brut 187 / 750",13000,"Champagne"],["Bebidas","Gaseosas línea Coca-Cola",4000,"Bebidas sin Alcohol"],["Bebidas","Speed (Bebidas)",5000,"Bebidas sin Alcohol"],["Bebidas","Agua con y sin gas",4000,"Bebidas sin Alcohol"],["Bebidas","Agua saborizada",4000,"Bebidas sin Alcohol"],["Bebidas","Exprimido",5500,"Bebidas sin Alcohol"],["Bebidas","Limonada/Naranjada",5500,"Bebidas sin Alcohol"],["Bebidas","Licuados",6500,"Bebidas sin Alcohol"],["Bebidas","Milkshake",8500,"Bebidas sin Alcohol"],["Tapeos","Rabas",22500,""],["Tapeos","Langostinos rebozados",21000,""],["Tapeos","Triangulitos de muzzarella",13000,""],["Tapeos","Supremitas pastora",18500,""],["Tapeos","Aros de cebolla + dip",5000,""],["Tapeos","Empanadas x 2",7000,""],["Tapeos","Golden chicken más tres salsas",11000,"Barbacoa picante/ alioli / Cheddar."],["Tapeos","Salsas dip. extra",3000,"Barbacoa picante/ alioli / Cheddar."],["Tapeos","Tablita de fiambre para dos",26000,"Queso / salamin / crudo / longaniza."],["Tapeos","Brusquetas (dos a elección)",11000,"Crudo y tomate seco / Morcilla, queso crema y verdeo / Roquefort y nuez."],["Tapeos","Ravioles James B.",9000,"Ravioles de verdura fritos: a la provenzal, con dip de salsa golf y morrón."],["Tapeos","Milanesitas + Dip",15000,""],["Tapeos","Tortilla de Papa",9500,""],["Tapeos","Buñuelos de Acelga",9500,""],["Tapeos","Tequeños de queso (3) + dip",5500,""],["Tapeos","Papas Snack",2500,""],["Tapeos","Cazuela Cherrys",5000,""],["Tapeos","Cazuela Pategras",5000,""],["Tapeos","Cazuela De Berenjenas",5000,""],["Tapeos","Cazuelita de mani",0,""],["Papas","Papas Solas",8000,""],["Papas","Papas A Caballo (2 h.f.)",10000,""],["Papas","Papas Panceta",13000,"Panceta, cheddar y verdeo."],["Papas","Papas Mostaza con miel / Barbacoa picante",12000,""],["Papas","Papas A los tres quesos con jamón",12500,""],["Papas","Papas Veggies",13000,"Berenjenas, cebolla caramelizada, cherrys confitados y morrón."],["Papas","Papas Combinadas",13000,"2 salsas a elección"],["Papas","Papas Fungi",13000,"Champignon, cebolla, ajito y reduccion de cerveza honey."],["Pizzas","Pizza Muzza",20000,""],["Pizzas","Pizza Muzza (1/2)",10500,""],["Pizzas","Pizza Jamón y morrón",26000,""],["Pizzas","Pizza Jamón y morrón (1/2)",13500,""],["Pizzas","Pizza Fugazza con muzza",22000,""],["Pizzas","Pizza Fugazza con muzza (1/2)",11500,""],["Pizzas","Pizza Anchoas",28000,""],["Pizzas","Pizza Anchoas (1/2)",14500,""],["Pizzas","Pizza Napolitana",26000,""],["Pizzas","Pizza Napolitana (1/2)",13500,""],["Pizzas","Pizza Capresse",26000,""],["Pizzas","Pizza Capresse (1/2)",13500,""],["Pizzas","Pizza Roquefort y nuez",28000,""],["Pizzas","Pizza Roquefort y nuez (1/2)",14500,""],["Pizzas","Pizza Calabresa",26000,""],["Pizzas","Pizza Calabresa (1/2)",13500,""],["Pizzas","Pizza Tres quesos con jamón",26000,""],["Pizzas","Pizza Tres quesos con jamón (1/2)",13500,""],["Pizzas","Pizza Pollo al verdeo",26000,""],["Pizzas","Pizza Pollo al verdeo (1/2)",13500,""],["Pizzas","Pizza Pollo con salsa golf",26000,""],["Pizzas","Pizza Pollo con salsa golf (1/2)",13500,""],["Pizzas","Pizza Rúcula y crudo",28000,""],["Pizzas","Pizza Rúcula y crudo (1/2)",14500,""],["Pizzas","Pizza Panceta y ajíes",28000,""],["Pizzas","Pizza Panceta y ajíes (1/2)",14500,""],["Pizzas","Pizza Panceta y huevo",28000,""],["Pizzas","Pizza Panceta y huevo (1/2)",14500,""],["Pizzas","Pizza Jamon y anana",28000,""],["Pizzas","Pizza Jamon y anana (1/2)",14500,""],["Pizzas","Pizza Palmitos",28000,""],["Pizzas","Pizza Palmitos (1/2)",14500,""],["Hamburguesas","Hamburguesa Rocky",17000,"Queso, roquefort y rúcula."],["Hamburguesas","Hamburguesa Cheddar",17000,"Cheddar, panceta y cebolla."],["Hamburguesas","Hamburguesa Cerebro",17000,"Queso, huevo estrellado y ajíes."],["Hamburguesas","Hamburguesa Buzz A",17000,"Guacamole, queso, tomate y rúcula."],["Hamburguesas","Hamburguesa Completa",16000,"Jamón, queso, lechuga, tomate y huevo."],["Sandwichs","Sándwich Crudo, manteca y queso",15000,"Sándwiches Fríos"],["Sandwichs","Sándwich Lechuga, zanahoria, tomate, palta y queso crema",14000,"Sándwiches Fríos"],["Sandwichs","Sándwich Guacamole, queso, tomate y rúcula",15000,"Sándwiches Fríos"],["Sandwichs","Sándwich Jamón y queso",9000,"Sándwiches Calientes"],["Sandwichs","Sándwich Pollo, queso, jamón crudo y ananá",15000,"Sándwiches Calientes"],["Sandwichs","Sándwich Pollo, muzza, roquefort, rúcula, lechuga bañadas en oliva y mix de semillas",14000,"Sándwiches Calientes"],["Sandwichs","Sándwich Cheddar, cebolla caramelizada, tomates secos, berenjenas asadas y aceitunas negras",14000,"Sándwiches Calientes"],["Sandwichs","Sándwich Bondiola a la barbacoa con zanahoria, repollo colorado, mayonesa, mostaza y crema",17500,"Sándwiches Calientes"],["Sandwichs","Sándwich Milanesa",22000,"Sándwiches Calientes"],["Ensaladas","Ensalada Chila",15000,"Palta, huevo duro, queso tybo, pimienta, zanahoria, nuez picada, cachaça, vinagre y oliva."],["Ensaladas","Ensalada Capresse",15000,"Cherry, albahaca, queso y aceitunas negras."],["Ensaladas","Ensalada Palta",15000,"Palta, lechuga, rucula, cherry, ciboulette y salsa de soja."],["Ensaladas","Ensalada Abraxas",15000,"Pollo, zanahoria, rúcula, ananá, queso, mix de hojas verdes y mix de semillas."],["Ensaladas","Ensalada Leia",15000,"Rúcula, jamón crudo, cherry, parmesano y mix de semillas."],["Ensaladas","Ensalada Margót",15000,"Rúcula, pera, roquefort y nuez."],["Milanesas","Milanesa Sola",19000,""],["Milanesas","Milanesa Napolitana / Capresse",23000,""],["Milanesas","Milanesa Chila",23000,"Cheddar con cebolla caramelizada, morrón, zanahoria y mix de semillas."],["Milanesas","Milanesa Rocky",23000,"Rúcula con salsa de roquefort y nuez picada."],["Sin T.A.C.C.","Sin T.A.C.C.: Hamburguesa",16000,"Tomate, cebolla, lechuga y papas a caballo."],["Sin T.A.C.C.","Sin T.A.C.C.: Pizza",16000,"Consultar variedades."],["Sin T.A.C.C.","Sin T.A.C.C.: Pollo grillé",19000,"Con guarnición."],["Postres","Helado dos Bochas",8000,""],["Postres","Brownie con Helado",8000,""],["Postres","Don Pedro",9500,""],["Postres","Mousse de Chocolate",5500,""]];
+
+/* ---------- iconos (trazo, estilo lineal) ---------- */
+const ICONS={
+plus:'<path d="M12 5v14M5 12h14"/>',minus:'<path d="M5 12h14"/>',check:'<path d="M20 6 9 17l-5-5"/>',x:'<path d="M18 6 6 18M6 6l12 12"/>',
+search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+printer:'<path d="M6 9V3h12v6"/><rect x="6" y="14" width="12" height="7"/><path d="M6 17H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/>',
+cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/>',
+chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/>',
+grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+flame:'<path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-10z"/>',
+users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 2.9-6 6.5-6s6.5 2.5 6.5 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2.5.6 4 2.6 4 6"/>',
+user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>',
+logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',
+send:'<path d="m22 2-7 20-4-9-9-4zM22 2 11 13"/>',
+trash:'<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/>',
+card:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>',
+cash:'<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/>',
+qr:'<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M21 14v.01M14 21h3M21 17v4"/>',
+bank:'<path d="M3 10 12 4l9 6M5 10v8M10 10v8M14 10v8M19 10v8M3 21h18"/>',
+sliders:'<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+wifioff:'<path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M2 8.8a15 15 0 0 1 4.2-2.7M22 8.8a15 15 0 0 0-8-3.7M5 12.9a10 10 0 0 1 3.5-2M19 12.9a10 10 0 0 0-2-1.5M12 20h.01"/>',
+bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 0 0 4 0"/>',
+utensils:'<path d="M5 3v8a2 2 0 0 0 2 2v8M9 3v8M7 3v18M17 21V3c-2.5 1.5-3 5-3 8h3"/>',
+lock:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+receipt:'<path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2zM9 8h6M9 12h6"/>',
+download:'<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/>',
+back:'<path d="M15 18 9 12l6-6"/>',
+heart:'<path d="M20.8 5.6a5.2 5.2 0 0 0-7.4 0L12 7l-1.4-1.4a5.2 5.2 0 0 0-7.4 7.4L12 21.8l8.8-8.8a5.2 5.2 0 0 0 0-7.4z"/>'
+};
+const I=(n,c='')=>`<svg class="ic ${c}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]||''}</svg>`;
+
+/* ---------- datos ---------- */
+const DU=()=>[{id:1,name:'Admin',role:'admin',pin:'1234'},{id:2,name:'Mozo',role:'mozo',pin:'0000'},{id:3,name:'Cocina',role:'cocina',pin:'1111'}];
+const demo=()=>({seq:1000,tables:Array.from({length:8},(_,i)=>({id:i+1})),orders:[],res:[],users:DU(),cfg:{name:'Resto',addr:'',tip:10,auto:false},menu:MENU.map((p,i)=>({id:i+1,cat:p[0],name:p[1],price:p[2],d:p[3]}))});
+const clean=n=>String(n).replace(/Papas Calavera/i,'Papas Panceta').replace(/Hamburguesa Calavera/i,'Hamburguesa Cheddar').replace(/\s*Calavera/gi,'');
+let S,V={tab:'salon',table:null,cat:'Birras',rs:0,q:'',lu:null,err:'',rc:null},IP=null;
+const ss=(k,v)=>{try{if(v===undefined)return sessionStorage.getItem(k);v===null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v)}catch(e){}return null};
+let SESS=ss(SK);
+function fix(){const d=demo();if(!Array.isArray(S.users)||!S.users.length)S.users=d.users;S.res=S.res||[];S.cfg=Object.assign({},d.cfg,S.cfg||{});S.tables=S.tables||d.tables;S.orders=S.orders||[];
+ S.menu=S.menu.filter(p=>!/salchis\s*pop/i.test(p.name));S.menu.forEach(p=>{p.name=clean(p.name)})}
+function load(){try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!S||!S.menu)S=demo();fix()}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const cur=()=>S.users.find(u=>String(u.id)===String(SESS));
 const open=t=>S.orders.find(o=>o.table===t&&o.status==='open');
+const resv=t=>S.res.find(r=>r.table===t);
 const tot=o=>o.items.reduce((a,i)=>a+i.price*i.qty,0);
+const calc=o=>{const sub=tot(o),pct=o.tip==null?S.cfg.tip:o.tip,tip=Math.round(sub*pct/100),grand=sub+tip,split=o.split||1,pays=o.pays||[],paid=pays.reduce((a,p)=>a+p.amt,0),n=pays.length,share=n>=split-1?grand-paid:Math.round(grand/split);return{sub,pct,tip,grand,split,paid,n,share}};
 const find=id=>{for(const o of S.orders)if(o.status==='open'){const i=o.items.find(i=>i.id==id);if(i)return[o,i]}return[]};
-const nm=s=>String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const nm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
 function list(){const q=nm(V.q).trim().replace(/^#\s*/,'');return q?S.menu.filter(p=>/^\d+$/.test(q)?p.id===+q:nm(p.name+' '+(p.d||'')).includes(q)):S.menu.filter(p=>V.cat==='Todos'||p.cat===V.cat)}
 const prods=()=>list().map(p=>`<button class="prod" data-a="add" data-v="${p.id}"><span class="num">#${p.id}</span><span>${E(p.name)}</span>${p.d?`<small>${E(p.d)}</small>`:''}<b>${M(p.price)}</b></button>`).join('')||'<p class="mt">No hay productos con esa búsqueda.</p>';
 const ST={new:'Sin enviar',sent:'En cocina',ready:'Listo para servir',served:'Servido'};
+const ROLES={admin:'Administrador',mozo:'Mozo',cocina:'Cocina'};
+const TABS=[['salon','Salón','grid',['admin','mozo']],['cocina','Cocina','flame',['admin','cocina']],['reservas','Reservas','cal',['admin','mozo']],['carta','Carta','book',['admin']],['reportes','Reportes','chart',['admin']],['ajustes','Ajustes','sliders',['admin']]];
+const MZ=['admin','mozo'],AD=['admin'],KT=['admin','cocina'];
+const ACT={table:MZ,addt:AD,add:MZ,inc:MZ,dec:MZ,send:MZ,ready:KT,served:MZ,pay:MZ,tip:MZ,split:MZ,pcom:MZ,ppre:MZ,pticket:MZ,closerc:MZ,resadd:MZ,rescancel:MZ,resseat:MZ,newp:AD,del:AD,reset:AD,useradd:AD,userdel:AD};
+const can=a=>{const r=ACT[a],u=cur();return !r||(u&&r.includes(u.role))};
 
+/* ---------- impresión térmica ---------- */
+function printHTML(h){const p=document.getElementById('prt');p.innerHTML=h;setTimeout(()=>window.print(),60)}
+addEventListener('afterprint',()=>{const p=document.getElementById('prt');if(p)p.innerHTML=''});
+const trow=(a,b,c='')=>`<div class="t-row ${c}"><span>${a}</span><span>${b}</span></div>`;
+const dt=d=>new Date(d).toLocaleString('es-AR',{dateStyle:'short',timeStyle:'short'});
+function head(t){const c=S.cfg,u=cur();return `<div class="t-c t-b t-lg">${E(c.name)}</div>${c.addr?`<div class="t-c">${E(c.addr)}</div>`:''}<div class="t-c t-b">${t}</div><div class="t-hr"></div>`}
+function comandaHTML(o){const u=cur(),its=o.items.filter(i=>i.b&&i.b===o.lb);
+ return head('COMANDA')+`<div class="t-xl">MESA ${o.table}</div>${trow(dt(o.lb),u?E(u.name):'')}<div class="t-hr"></div>${its.map(i=>`<div class="t-it">${i.qty} x ${E(i.name)}</div>`).join('')}<div class="t-hr"></div>`}
+function ticketHTML(o,final){const c=calc(o),u=cur();
+ return head(final?'TICKET':'PRE-CUENTA')+trow('Mesa '+o.table,dt(final&&o.paidAt?o.paidAt:Date.now()))+(u?trow('Atendió',E(u.name)):'')+`<div class="t-hr"></div>`+o.items.map(i=>trow(`${i.qty} x ${E(i.name)}`,M(i.price*i.qty))).join('')+`<div class="t-hr"></div>`+trow('Subtotal',M(c.sub))+(c.tip?trow(`Propina ${c.pct}%`,M(c.tip)):'')+trow('TOTAL',M(c.grand),'t-b t-lg')+
+ (c.split>1?`<div class="t-hr"></div>${trow('Dividido entre',c.split)}${trow('Por persona (aprox.)',M(Math.round(c.grand/c.split)))}`:'')+
+ (final&&o.pays&&o.pays.length?`<div class="t-hr"></div>`+o.pays.map((p,i)=>trow(`Pago ${i+1}: ${E(p.m)}`,M(p.amt))).join(''):'')+
+ `<div class="t-hr"></div><div class="t-c">¡Gracias por su visita!</div><div class="t-c">Documento no válido como factura</div>`}
+function printComanda(o){if(o&&o.lb)printHTML(comandaHTML(o))}
+
+/* ---------- acciones ---------- */
+const locked=o=>o&&o.pays&&o.pays.length;
 const A={
- tab:v=>{V.tab=v;V.table=null},
- table:v=>{V.table=+v;V.q=''},
+ tab:v=>{V.tab=v;V.table=null;V.rc=null},
+ table:v=>{V.table=+v;V.q='';V.rc=null},
  back:()=>{V.table=null},
  cat:v=>{V.cat=v;V.q=''},
  addt:()=>{S.tables.push({id:S.tables.length?Math.max(...S.tables.map(t=>t.id))+1:1})},
- add:v=>{const p=S.menu.find(p=>p.id==v);if(!p)return;let o=open(V.table);if(!o){o={id:S.seq++,table:V.table,status:'open',items:[]};S.orders.push(o)}
+ add:v=>{const p=S.menu.find(p=>p.id==v);if(!p)return;let o=open(V.table);if(locked(o))return;if(!o){o={id:S.seq++,table:V.table,status:'open',items:[]};S.orders.push(o);S.res=S.res.filter(r=>r.table!==V.table)}
   const x=o.items.find(i=>i.pid===p.id&&i.s==='new');x?x.qty++:o.items.push({id:S.seq++,pid:p.id,name:p.name,price:p.price,qty:1,s:'new'})},
- inc:v=>{const[o,i]=find(v);if(i)i.qty++},
- dec:v=>{const[o,i]=find(v);if(!i)return;if(--i.qty<1)o.items=o.items.filter(x=>x!==i);if(!o.items.length)S.orders=S.orders.filter(x=>x!==o)},
- send:()=>{const o=open(V.table);if(o)o.items.forEach(i=>{if(i.s==='new'){i.s='sent';i.t=Date.now()}})},
+ inc:v=>{const[o,i]=find(v);if(i&&!locked(o))i.qty++},
+ dec:v=>{const[o,i]=find(v);if(!i||locked(o))return;if(--i.qty<1)o.items=o.items.filter(x=>x!==i);if(!o.items.length)S.orders=S.orders.filter(x=>x!==o)},
+ send:()=>{const o=open(V.table);if(!o)return;const b=Date.now();o.items.forEach(i=>{if(i.s==='new'){i.s='sent';i.t=b;i.b=b}});o.lb=b;if(S.cfg.auto)printComanda(o)},
+ pcom:()=>printComanda(open(V.table)),
+ ppre:()=>{const o=open(V.table);if(o)printHTML(ticketHTML(o,false))},
+ pticket:v=>{const o=S.orders.find(x=>x.id==v);if(o)printHTML(ticketHTML(o,true))},
+ closerc:()=>{V.rc=null},
  ready:v=>{const[o,i]=find(v);if(i)i.s='ready'},
  served:v=>{const[o,i]=find(v);if(i)i.s='served'},
- pay:v=>{const o=open(V.table);if(o){o.status='paid';o.method=v;o.total=tot(o);o.paidAt=Date.now();V.table=null}},
+ tip:v=>{const o=open(V.table);if(o&&!locked(o))o.tip=+v},
+ split:v=>{const o=open(V.table);if(o&&!locked(o))o.split=Math.min(20,Math.max(1,(o.split||1)+(+v)))},
+ pay:v=>{const o=open(V.table);if(!o)return;const c=calc(o);o.pays=o.pays||[];o.pays.push({m:v,amt:c.share});
+  if(o.pays.length>=c.split){o.status='paid';o.method=[...new Set(o.pays.map(p=>p.m))].join(' + ');o.sub=c.sub;o.tipAmt=c.tip;o.tipPct=c.pct;o.total=c.grand;o.paidAt=Date.now();V.rc=o.id;V.table=null}},
+ resadd:()=>{const t=+document.getElementById('rs-t').value,n=document.getElementById('rs-n').value.trim();if(!t||!n||open(t)||resv(t))return;
+  S.res.push({id:S.seq++,table:t,name:n,time:document.getElementById('rs-h').value,pax:+document.getElementById('rs-p').value||0})},
+ rescancel:v=>{S.res=S.res.filter(r=>r.id!=v)},
+ resseat:v=>{const r=S.res.find(r=>r.id==v);if(r){V.tab='salon';V.table=r.table;V.q=''}},
  newp:()=>{const n=document.getElementById('np-n').value.trim(),c=document.getElementById('np-c').value.trim()||'Otros',p=+document.getElementById('np-p').value;if(n&&p>=0)S.menu.push({id:Math.max(0,...S.menu.map(x=>x.id))+1,name:n,cat:c,price:p})},
  del:v=>{S.menu=S.menu.filter(p=>p.id!=v)},
- reset:()=>{if(!V.rs){V.rs=1;return}S=demo();V.rs=0}
+ reset:()=>{if(!V.rs){V.rs=1;return}const u=S.users,c=S.cfg;S=demo();S.users=u;S.cfg=c;V.rs=0},
+ useradd:()=>{const n=document.getElementById('nu-n').value.trim(),r=document.getElementById('nu-r').value,p=document.getElementById('nu-p').value.trim();if(n&&ROLES[r]&&/^\d{4,8}$/.test(p))S.users.push({id:S.seq++,name:n,role:r,pin:p})},
+ userdel:v=>{const u=S.users.find(x=>x.id==v),me=cur();if(!u||u.id===me.id)return;if(u.role==='admin'&&S.users.filter(x=>x.role==='admin').length<2)return;S.users=S.users.filter(x=>x!==u)},
+ pick:v=>{V.lu=+v;V.err=''},
+ login:()=>{const u=S.users.find(x=>x.id===V.lu),el=document.getElementById('pin');if(!u||!el)return;if(el.value===String(u.pin)){SESS=String(u.id);ss(SK,SESS);V.lu=null;V.err='';V.table=null;V.rc=null;V.tab=TABS.find(t=>t[3].includes(u.role))[0]}else V.err='PIN incorrecto'},
+ unpick:()=>{V.lu=null;V.err=''},
+ logout:()=>{SESS=null;ss(SK,null);V.lu=null;V.table=null;V.rc=null;V.err=''},
+ install:()=>{if(IP){IP.prompt();IP=null}}
 };
-document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const f=A[b.dataset.a];if(f){f(b.dataset.v);if(b.dataset.a!=='reset')V.rs=0;save();render()}});
-document.addEventListener('change',e=>{const el=e.target.closest('[data-price]');if(!el)return;const p=S.menu.find(p=>p.id==el.dataset.price),n=+el.value;if(p&&n>=0){p.price=n;save();render()}});
+function run(a,v){if(!can(a))return;const f=A[a];if(f){f(v);if(a!=='reset')V.rs=0;save();render()}}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b&&!b.disabled)run(b.dataset.a,b.dataset.v)});
+function userEdit(el){const u=S.users.find(x=>x.id==el.dataset.id);if(!u)return;const k=el.dataset.u,v=el.value.trim();
+ if(k==='name'&&v)u.name=v;
+ else if(k==='pin'&&/^\d{4,8}$/.test(v))u.pin=v;
+ else if(k==='role'&&ROLES[v]&&(u.role!=='admin'||v==='admin'||S.users.filter(x=>x.role==='admin').length>1))u.role=v}
+document.addEventListener('change',e=>{const el=e.target,u=cur();if(!u||u.role!=='admin')return;
+ if(el.dataset.price){const p=S.menu.find(p=>p.id==el.dataset.price),n=+el.value;if(p&&n>=0)p.price=n}
+ else if(el.dataset.cfg){const k=el.dataset.cfg;S.cfg[k]=el.type==='checkbox'?el.checked:k==='tip'?+el.value:el.value.trim()}
+ else if(el.dataset.u)userEdit(el);else return;
+ save();render()});
 document.addEventListener('input',e=>{if(e.target.id==='q'){V.q=e.target.value;const g=document.getElementById('pg');if(g)g.innerHTML=prods()}});
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='q'){const r=list();if(r.length===1){A.add(r[0].id);V.q='';save();render();const q=document.getElementById('q');if(q)q.focus()}}});
-addEventListener('storage',e=>{if(e.key===KEY){load();render()}});
-setInterval(()=>{if(V.tab==='cocina')render()},30000);
+document.addEventListener('keydown',e=>{if(e.key!=='Enter')return;
+ if(e.target.id==='pin'){run('login');return}
+ if(e.target.id==='q'&&can('add')){const r=list();if(r.length===1&&V.table){A.add(r[0].id);V.q='';save();render();const q=document.getElementById('q');if(q)q.focus()}}});
+addEventListener('storage',e=>{if(e.key===KEY){const a=document.activeElement;load();if(a&&a.id==='pin')return;render()}});
+addEventListener('online',()=>render());addEventListener('offline',()=>render());
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();IP=e;render()});
+addEventListener('appinstalled',()=>{IP=null;render()});
+setInterval(()=>{if(cur()&&V.tab==='cocina')render()},30000);
 
+/* ---------- vistas ---------- */
+const PAYI={Efectivo:'cash',Tarjeta:'card',QR:'qr',Transferencia:'bank'};
+function tile(t){const o=open(t.id),r=o?o.items.filter(i=>i.s==='ready').length:0,rv=!o&&resv(t.id);
+ const [cl,pl,ic,det]=r?['rdy',r+' para servir','bell',M(tot(o))]:o?['busy','Ocupada','utensils',M(tot(o))]:rv?['resv','Reservada','cal',E(rv.name)+(rv.time?' · '+E(rv.time):'')]:['free','Libre','check','<span class="mt">Disponible</span>'];
+ return `<button class="tbl ${cl}" data-a="table" data-v="${t.id}" aria-label="Mesa ${t.id}: ${pl}"><span class="row"><span class="tn">${t.id}</span><span class="pill">${I(ic)}${pl}</span></span><span class="det">${det}</span></button>`}
 function salon(){
+ if(V.rc){const o=S.orders.find(x=>x.id===V.rc);if(o)return receipt(o);V.rc=null}
  if(V.table)return orderView();
- return `<div class="grid">${S.tables.map(t=>{const o=open(t.id),r=o?o.items.filter(i=>i.s==='ready').length:0;
-  return `<button class="tbl ${r?'rdy':o?'busy':''}" data-a="table" data-v="${t.id}"><b>${t.id}</b><span>${r?r+' para servir':o?M(tot(o)):'Libre'}</span>${o&&r?`<small>${M(tot(o))}</small>`:''}</button>`}).join('')}
- <button class="tbl" data-a="addt"><b>+</b><span>Agregar mesa</span></button></div>`;
-}
-const line=i=>`<div class="ln"><div><b>${i.qty}× ${E(i.name)}</b><small class="s-${i.s}">${ST[i.s]}</small></div><div class="acts">${i.s==='new'?`<button data-a="dec" data-v="${i.id}" aria-label="Quitar uno">−</button><button data-a="inc" data-v="${i.id}" aria-label="Agregar uno">+</button>`:i.s==='ready'?`<button class="pri" data-a="served" data-v="${i.id}">Servido</button>`:''}</div></div>`;
+ return `<div class="grid">${S.tables.map(tile).join('')}<button class="tbl add" data-a="addt">${I('plus')}<span>Agregar mesa</span></button></div>`}
+function receipt(o){return `<div class="card done"><div class="ok-i">${I('check')}</div><h2>Mesa ${o.table} cobrada</h2><p class="mt">${E(o.method)} · ${dt(o.paidAt)}</p><div class="tot" style="justify-content:center;gap:10px"><span>Total</span>${M(o.total)}</div>${o.tipAmt?`<p class="mt">Incluye propina de ${M(o.tipAmt)} (${o.tipPct}%)</p>`:''}
+ <div class="acts" style="justify-content:center;margin-top:16px"><button class="pri" data-a="pticket" data-v="${o.id}">${I('printer')}Imprimir ticket</button><button data-a="closerc">Volver a las mesas</button></div></div>`}
+const line=i=>`<div class="ln"><div><b>${i.qty}× ${E(i.name)}</b><small class="s-${i.s}">${ST[i.s]}</small></div><div class="acts">${i.s==='new'?`<button data-a="dec" data-v="${i.id}" aria-label="Quitar uno">${I('minus')}</button><button data-a="inc" data-v="${i.id}" aria-label="Agregar uno">${I('plus')}</button>`:i.s==='ready'?`<button class="pri" data-a="served" data-v="${i.id}">Servido</button>`:''}</div></div>`;
+function payPanel(o,c){
+ const lk=c.n>0;
+ return `<div class="sep"></div>
+ <div class="row2"><span class="mt">Subtotal</span><b>${M(c.sub)}</b></div>
+ <div class="lbl">${I('heart')}Propina</div><div class="acts">${[0,5,10,15,20].map(p=>`<button class="${c.pct===p?'on':''}" data-a="tip" data-v="${p}" ${lk?'disabled':''}>${p}%</button>`).join('')}</div>
+ <div class="lbl">${I('users')}Dividir entre</div><div class="stp"><button data-a="split" data-v="-1" ${lk||c.split<2?'disabled':''} aria-label="Menos personas">${I('minus')}</button><b aria-live="polite">${c.split}</b><button data-a="split" data-v="1" ${lk?'disabled':''} aria-label="Más personas">${I('plus')}</button><span class="hint">${c.split>1?'personas':'persona'}</span></div>
+ <div class="row2" style="margin-top:12px"><span class="mt">Propina${c.pct?` (${c.pct}%)`:''}</span><b>${M(c.tip)}</b></div>
+ <div class="tot"><span>Total a cobrar</span>${M(c.grand)}</div>
+ ${c.split>1?`<div class="share"><span>${lk?`Parte ${c.n+1} de ${c.split}`:`Cada uno (parte 1 de ${c.split})`}</span><b>${M(c.share)}</b></div>`:''}
+ ${lk?`<div class="paid">${I('check')} Pagaron ${c.n} de ${c.split} · ${M(c.paid)} cobrado${o.pays.map(p=>`<br><small class="mt">${E(p.m)} ${M(p.amt)}</small>`).join('')}</div>`:''}
+ <div class="lbl">${c.split>1?`Cobrar parte ${c.n+1} con`:'Cobrar con'}</div><div class="paym">${Object.keys(PAYI).map(m=>`<button data-a="pay" data-v="${m}">${I(PAYI[m])}${m}</button>`).join('')}</div>
+ <button class="ghost big" style="margin-top:10px;min-height:44px;font-size:15px" data-a="ppre">${I('receipt')}Imprimir pre-cuenta</button>`}
 function orderView(){
- const t=V.table,o=open(t),items=o?o.items:[],nw=items.some(i=>i.s==='new'),cats=['Todos',...new Set(S.menu.map(p=>p.cat))];
+ const t=V.table,o=open(t),items=o?o.items:[],nw=items.some(i=>i.s==='new'),cats=['Todos',...new Set(S.menu.map(p=>p.cat))],rv=!o&&resv(t),c=o?calc(o):null;
  if(!cats.includes(V.cat))V.cat='Todos';
- return `<div class="acts" style="margin-bottom:10px;align-items:center"><button data-a="back">Volver a las mesas</button><h2 style="margin:0">Mesa ${t}</h2></div>
- <div class="split"><section><input id="q" class="search" type="search" inputmode="search" placeholder="Buscar por nombre o número (#12)" aria-label="Buscar producto por nombre o número" value="${E(V.q)}"><div class="chips">${cats.map(c=>`<button class="${c===V.cat?'on':''}" data-a="cat" data-v="${E(c)}">${E(c)}</button>`).join('')}</div>
+ return `<div class="acts" style="margin-bottom:14px"><button data-a="back">${I('back')}Mesas</button><h2 style="margin:0 0 0 6px">Mesa ${t}</h2></div>
+ ${rv?`<div class="banner">${I('cal')}Reservada a nombre de ${E(rv.name)}${rv.time?` · ${E(rv.time)}`:''}${rv.pax?` · ${rv.pax} pers.`:''}<button data-a="rescancel" data-v="${rv.id}">Cancelar reserva</button></div>`:''}
+ <div class="split"><section><div class="search">${I('search')}<input id="q" type="search" inputmode="search" placeholder="Buscar por nombre o número (#12)" aria-label="Buscar producto por nombre o número" value="${E(V.q)}"></div><div class="chips">${cats.map(c=>`<button class="${c===V.cat?'on':''}" data-a="cat" data-v="${E(c)}">${E(c)}</button>`).join('')}</div>
  <div class="prods" id="pg">${prods()}</div></section>
- <aside class="card"><h3>Comanda</h3>${items.length?items.map(line).join(''):'<p class="mt">Tocá un plato para empezar el pedido.</p>'}
- <div class="tot"><span>Total</span><b>${M(o?tot(o):0)}</b></div>
- <button class="pri" style="width:100%" data-a="send" ${nw?'':'disabled'}>Enviar a cocina</button>
- ${items.length&&!nw?`<p class="mt">Cobrar con</p><div class="acts">${['Efectivo','Tarjeta','QR','Transferencia'].map(m=>`<button data-a="pay" data-v="${m}">${m}</button>`).join('')}</div>`:''}</aside></div>`;
-}
+ <aside class="card aside"><h3>${I('receipt')}Comanda</h3>${items.length?items.map(line).join(''):'<p class="mt">Tocá un plato para empezar el pedido.</p>'}
+ ${locked(o)?'<p class="hint">Cobro en curso: el pedido ya no se puede modificar.</p>':''}
+ ${items.length?'':`<div class="tot"><span>Total</span>${M(0)}</div>`}
+ <button class="pri big" data-a="send" ${nw?'':'disabled'}>${I('send')}Enviar a cocina</button>
+ ${o&&o.lb?`<button class="ghost big" style="margin-top:8px;min-height:44px;font-size:15px" data-a="pcom">${I('printer')}Imprimir comanda</button>`:''}
+ ${items.length&&!nw?payPanel(o,c):items.length?`<div class="tot"><span>Subtotal</span>${M(tot(o))}</div>`:''}</aside></div>`}
 function cocina(){
  const rows=S.orders.filter(o=>o.status==='open').flatMap(o=>o.items.filter(i=>i.s==='sent').map(i=>({...i,table:o.table}))).sort((a,b)=>a.t-b.t);
- if(!rows.length)return '<div class="card"><h3>Cocina</h3><p class="mt">No hay pedidos pendientes. Cuando el salón envíe una comanda, aparece acá.</p></div>';
- return `<div class="card kit"><h3>Pendientes en cocina</h3>${rows.map(i=>{const m=Math.floor((Date.now()-i.t)/60000);
-  return `<div class="ln"><div><b>Mesa ${i.table}: ${i.qty}× ${E(i.name)}</b><small class="${m>=15?'late':''}">Hace ${m} min</small></div><button class="pri" data-a="ready" data-v="${i.id}">Listo</button></div>`}).join('')}</div>`;
-}
+ if(!rows.length)return `<div class="card"><h3>${I('flame')}Cocina</h3><p class="mt">No hay pedidos pendientes. Cuando el salón envíe una comanda, aparece acá.</p></div>`;
+ return `<div class="card kit"><h3>${I('flame')}Pendientes en cocina</h3>${rows.map(i=>{const m=Math.floor((Date.now()-i.t)/60000);
+  return `<div class="ln"><div class="who2"><span class="rtag" style="background:var(--acs);color:var(--ac)">${i.table}</span><div><b>${i.qty}× ${E(i.name)}</b><small class="${m>=15?'late':''}">${I('clock')} Hace ${m} min</small></div></div><button class="pri" data-a="ready" data-v="${i.id}">${I('check')}Listo</button></div>`}).join('')}</div>`}
+function reservas(){
+ const free=S.tables.filter(t=>!open(t.id)&&!resv(t.id)),rs=[...S.res].sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99'));
+ return `<div class="card"><h3>${I('cal')}Nueva reserva</h3>${free.length?`<div class="form"><label>Mesa<select id="rs-t" aria-label="Mesa libre">${free.map(t=>`<option value="${t.id}">Mesa ${t.id}</option>`).join('')}</select></label><label>Nombre<input id="rs-n" placeholder="Nombre de la reserva" style="width:200px"></label><label>Hora<input id="rs-h" type="time" style="width:120px"></label><label>Personas<input id="rs-p" type="number" min="1" placeholder="4" style="width:90px"></label><button class="pri" data-a="resadd">${I('plus')}Reservar</button></div>`:'<p class="mt">No hay mesas libres para reservar.</p>'}</div>
+ <div class="card"><h3>Reservas activas</h3>${rs.length?rs.map(r=>`<div class="ln"><div class="who2"><span class="rtag">${r.table}</span><div><b>${E(r.name)}</b><small>Mesa ${r.table}${r.time?' · '+E(r.time):''}${r.pax?' · '+r.pax+' pers.':''}</small></div></div><div class="acts"><button class="pri" data-a="resseat" data-v="${r.id}">Sentar</button><button data-a="rescancel" data-v="${r.id}" aria-label="Cancelar reserva de ${E(r.name)}">${I('x')}</button></div></div>`).join(''):'<p class="mt">No hay reservas. Las mesas reservadas aparecen en el salón con el nombre.</p>'}</div>`}
 function carta(){
  const cats=[...new Set(S.menu.map(p=>p.cat))];
- return `<div class="card"><h3>Agregar plato o bebida</h3><div class="acts"><input id="np-n" placeholder="Nombre" aria-label="Nombre"><input id="np-c" list="cl" placeholder="Categoría" aria-label="Categoría"><datalist id="cl">${cats.map(c=>`<option value="${E(c)}">`).join('')}</datalist><input id="np-p" type="number" min="0" placeholder="Precio" aria-label="Precio"><button class="pri" data-a="newp">Agregar</button></div></div>
- <div class="card">${S.menu.map(p=>`<div class="ln"><div><b>${E(p.name)}</b><small>#${p.id}: ${E(p.cat)}</small></div><div class="acts"><input type="number" min="0" value="${p.price}" data-price="${p.id}" aria-label="Precio de ${E(p.name)}"><button data-a="del" data-v="${p.id}">Quitar</button></div></div>`).join('')}
- <div class="acts" style="margin-top:12px"><button data-a="reset">${V.rs?'Tocá de nuevo para confirmar':'Restaurar datos de ejemplo'}</button></div></div>`;
-}
+ return `<div class="card"><h3>${I('plus')}Agregar plato o bebida</h3><div class="form"><input id="np-n" placeholder="Nombre" aria-label="Nombre" style="width:200px"><input id="np-c" list="cl" placeholder="Categoría" aria-label="Categoría"><datalist id="cl">${cats.map(c=>`<option value="${E(c)}">`).join('')}</datalist><input id="np-p" type="number" min="0" placeholder="Precio" aria-label="Precio"><button class="pri" data-a="newp">Agregar</button></div></div>
+ <div class="card">${S.menu.map(p=>`<div class="ln"><div><b>${E(p.name)}</b><small>#${p.id}: ${E(p.cat)}</small></div><div class="acts"><input type="number" min="0" value="${p.price}" data-price="${p.id}" aria-label="Precio de ${E(p.name)}"><button data-a="del" data-v="${p.id}" aria-label="Quitar ${E(p.name)}" class="dng ib">${I('trash')}</button></div></div>`).join('')}
+ <div class="acts" style="margin-top:12px"><button data-a="reset">${V.rs?'Tocá de nuevo para confirmar':'Restaurar carta de ejemplo'}</button></div></div>`}
 function reportes(){
- const d=new Date().toDateString(),ps=S.orders.filter(o=>o.status==='paid'&&new Date(o.paidAt).toDateString()===d),sum=ps.reduce((a,o)=>a+o.total,0),by={},top={};
- ps.forEach(o=>{by[o.method]=(by[o.method]||0)+o.total;o.items.forEach(i=>top[i.name]=(top[i.name]||0)+i.qty)});
+ const d=new Date().toDateString(),ps=S.orders.filter(o=>o.status==='paid'&&new Date(o.paidAt).toDateString()===d),sub=o=>o.sub!=null?o.sub:o.total,sum=ps.reduce((a,o)=>a+sub(o),0),tips=ps.reduce((a,o)=>a+(o.tipAmt||0),0),by={},top={};
+ ps.forEach(o=>{(o.pays&&o.pays.length?o.pays:[{m:o.method,amt:o.total}]).forEach(p=>by[p.m]=(by[p.m]||0)+p.amt);o.items.forEach(i=>top[i.name]=(top[i.name]||0)+i.qty)});
  const t=Object.entries(top).sort((a,b)=>b[1]-a[1]).slice(0,5),mx=t.length?t[0][1]:1;
- if(!ps.length)return '<div class="card"><h3>Ventas de hoy</h3><p class="mt">Todavía no hay cobros hoy. Cuando cierres una mesa, las ventas aparecen acá.</p></div>';
- return `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-bottom:12px"><div class="card"><span class="mt">Ventas de hoy</span><h2>${M(sum)}</h2></div><div class="card"><span class="mt">Mesas cobradas</span><h2>${ps.length}</h2></div><div class="card"><span class="mt">Ticket promedio</span><h2>${M(sum/ps.length)}</h2></div></div>
- <div class="split"><div class="card"><h3>Por medio de pago</h3>${Object.entries(by).map(([k,v])=>`<div class="ln"><span>${E(k)}</span><b>${M(v)}</b></div>`).join('')}</div>
- <div class="card"><h3>Más vendidos</h3>${t.map(([n,q])=>`<div class="top"><span style="min-width:110px">${E(n)}</span><i style="width:${Math.max(8,q/mx*100)}px"></i><b>${q}</b></div>`).join('')}</div></div>`;
-}
+ if(!ps.length)return `<div class="card"><h3>${I('chart')}Ventas de hoy</h3><p class="mt">Todavía no hay cobros hoy. Cuando cierres una mesa, las ventas aparecen acá.</p></div>`;
+ return `<div class="kpis"><div class="card kpi"><span class="mt">Ventas de hoy</span><h2>${M(sum)}</h2></div><div class="card kpi"><span class="mt">Propinas</span><h2>${M(tips)}</h2></div><div class="card kpi"><span class="mt">Mesas cobradas</span><h2>${ps.length}</h2></div><div class="card kpi"><span class="mt">Ticket promedio</span><h2>${M(sum/ps.length)}</h2></div></div>
+ <div class="split" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))"><div class="card"><h3>Por medio de pago <span class="hint">(con propina)</span></h3>${Object.entries(by).map(([k,v])=>`<div class="ln"><span>${I(PAYI[k]||'cash')} ${E(k)}</span><b>${M(v)}</b></div>`).join('')}</div>
+ <div class="card" style="margin-top:0"><h3>Más vendidos</h3>${t.map(([n,q])=>`<div class="top"><span>${E(n)}</span><i style="width:${Math.max(8,q/mx*100)}px"></i><b>${q}</b></div>`).join('')}</div></div>`}
+function ajustes(){const me=cur();
+ return `<div class="card"><h3>${I('receipt')}Negocio e impresión</h3><div class="form"><label>Nombre en tickets<input data-cfg="name" value="${E(S.cfg.name)}" style="width:200px"></label><label>Dirección (opcional)<input data-cfg="addr" value="${E(S.cfg.addr)}" style="width:240px"></label><label>Propina sugerida<select data-cfg="tip">${[0,5,10,15,20].map(p=>`<option value="${p}" ${S.cfg.tip===p?'selected':''}>${p}%</option>`).join('')}</select></label></div>
+ <label class="acts" style="margin-top:12px;min-height:44px"><input type="checkbox" data-cfg="auto" ${S.cfg.auto?'checked':''} style="width:22px;min-height:22px"> Imprimir la comanda automáticamente al enviar a cocina</label>
+ <p class="hint">Para impresoras térmicas: elegí la impresora de 80 mm en el diálogo de impresión y desactivá encabezados y pies de página.</p></div>
+ <div class="card"><h3>${I('users')}Usuarios y roles</h3>${S.users.map(u=>`<div class="ln" style="flex-wrap:wrap"><div class="acts"><input data-u="name" data-id="${u.id}" value="${E(u.name)}" aria-label="Nombre de usuario" style="width:150px"><select data-u="role" data-id="${u.id}" aria-label="Rol de ${E(u.name)}">${Object.entries(ROLES).map(([k,v])=>`<option value="${k}" ${u.role===k?'selected':''}>${v}</option>`).join('')}</select><input data-u="pin" data-id="${u.id}" value="${E(u.pin)}" inputmode="numeric" maxlength="8" aria-label="PIN de ${E(u.name)}" style="width:100px"></div>${u.id===me.id?'<span class="hint">Tu usuario</span>':`<button class="dng ib" data-a="userdel" data-v="${u.id}" aria-label="Eliminar ${E(u.name)}">${I('trash')}</button>`}</div>`).join('')}
+ <div class="sep"></div><div class="form"><label>Nuevo usuario<input id="nu-n" placeholder="Nombre" style="width:160px"></label><label>Rol<select id="nu-r">${Object.entries(ROLES).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></label><label>PIN (4 a 8 números)<input id="nu-p" inputmode="numeric" maxlength="8" placeholder="0000" style="width:100px"></label><button class="pri" data-a="useradd">${I('plus')}Agregar</button></div>
+ <p class="hint">Mozo: salón y reservas. Cocina: solo la pantalla de cocina. Administrador: todo, incluido carta, reportes y ajustes.</p></div>`}
+function login(){
+ const u=S.users.find(x=>x.id===V.lu),dflt=S.users.some(x=>x.role==='admin'&&x.pin==='1234');
+ return `<div class="lg"><div class="card lgc"><div class="logo">${I('utensils')}</div><h2 style="text-align:center">${E(S.cfg.name)}</h2><p class="mt" style="text-align:center;margin-top:0">${u?'Ingresá tu PIN':'¿Quién va a trabajar?'}</p>
+ ${u?`<div class="urow card" style="display:flex;align-items:center;gap:10px;margin-bottom:12px;box-shadow:none">${I('user')}<div><b>${E(u.name)}</b><small class="mt" style="display:block">${ROLES[u.role]}</small></div></div><input id="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="PIN" aria-label="PIN" style="width:100%;font-size:22px;text-align:center;letter-spacing:.3em">${V.err?`<p class="err" role="alert">${V.err}</p>`:''}<div class="acts" style="margin-top:12px"><button data-a="unpick">${I('back')}Cambiar</button><button class="pri" data-a="login" style="flex:1">${I('lock')}Entrar</button></div>`
+ :S.users.map(x=>`<button class="urow" data-a="pick" data-v="${x.id}">${I(x.role==='cocina'?'flame':x.role==='admin'?'sliders':'user')}<span><b>${E(x.name)}</b><small>${ROLES[x.role]}</small></span></button>`).join('')}
+ ${dflt&&!u?'<p class="hint" style="text-align:center">PIN inicial: Admin 1234 · Mozo 0000 · Cocina 1111. Cambialos en Ajustes.</p>':''}</div></div>`}
 function render(){
- const pend=S.orders.flatMap(o=>o.status==='open'?o.items:[]).filter(i=>i.s==='sent').length;
- const tabs=[['salon','Salón'],['cocina','Cocina'],['carta','Carta'],['reportes','Reportes']];
- const views={salon,cocina,carta,reportes};
- document.getElementById('app').innerHTML=`<header><span class="brand">Resto</span><nav>${tabs.map(([k,l])=>`<button class="${V.tab===k?'on':''}" data-a="tab" data-v="${k}">${l}${k==='cocina'&&pend?`<span class="badge">${pend}</span>`:''}</button>`).join('')}</nav></header><main>${views[V.tab]()}</main>`;
+ const U=cur(),app=document.getElementById('app');
+ if(!U){app.innerHTML=login();if(V.lu){const p=document.getElementById('pin');if(p)p.focus()}return}
+ const tabs=TABS.filter(t=>t[3].includes(U.role));if(!tabs.some(t=>t[0]===V.tab)){V.tab=tabs[0][0];V.table=null}
+ const pend=S.orders.flatMap(o=>o.status==='open'?o.items:[]).filter(i=>i.s==='sent').length,views={salon,cocina,reservas,carta,reportes,ajustes};
+ app.innerHTML=`<header class="hd"><div class="brand"><span class="logo">${I('utensils')}</span><span class="bn">${E(S.cfg.name)}</span></div>
+ <nav class="nav" aria-label="Secciones">${tabs.map(([k,l,ic])=>`<button class="${V.tab===k?'on':''}" data-a="tab" data-v="${k}" ${V.tab===k?'aria-current="page"':''}>${I(ic)}<span>${l}</span>${k==='cocina'&&pend?`<span class="badge" aria-label="${pend} pendientes">${pend}</span>`:''}</button>`).join('')}</nav>
+ <div class="hr sp">${navigator.onLine===false?`<span class="chip off">${I('wifioff')}Sin conexión</span>`:''}${IP?`<button data-a="install" style="min-height:36px">${I('download')}Instalar</button>`:''}<span class="chip who">${I('user')}<span class="nm"><b>${E(U.name)}</b>${nm(U.name)===nm(ROLES[U.role])?'':` <small>${ROLES[U.role]}</small>`}</span></span><button class="ib ghost" data-a="logout" aria-label="Cerrar sesión" title="Cerrar sesión">${I('logout')}</button></div></header><main>${views[V.tab]()}</main>`;
 }
 load();render();
+if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script>
 </body>
 </html>

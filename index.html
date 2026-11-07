@@ -138,6 +138,7 @@ h2{font-size:22px}h3{font-size:17px;display:flex;align-items:center;gap:8px}
  .who .nm,.brand .bn{display:none}
  .grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
 }
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:600;z-index:50;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}.toast.show{opacity:1}
 /* print (thermal 80mm) */
 #prt{display:none}
 @media print{
@@ -156,11 +157,11 @@ h2{font-size:22px}h3{font-size:17px;display:flex;align-items:center;gap:8px}
 <body>
 <div id="app"></div>
 <div id="prt" aria-hidden="true"></div>
+<script src="core.js"></script>
 <script>
 const KEY='resto.v2',SK='resto.sess';
 const M=n=>new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(n);
 const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const MENU=[["Birras","Clásicas",5000,"Golden, Blonda."],["Birras","Especiales",5500,"Honey, Porter, Scotch, Red Ale."],["Birras","Lupuladas",6800,"Ipa, Apa, Session Ipa."],["Birras","Lupuladas Especiales",7800,"Neipa, Doble Ipa, Floripa."],["Birras","Heineken 1L",13000,"Cervezas Industriales"],["Birras","Heineken 0% lata",6000,"Cervezas Industriales"],["Tragos","Aperol Spritz",14000,"Hielo, rodaja de naranja, aperol y espumante."],["Tragos","Cynar Julep",8500,"Cynar, menta en rama, azúcar, pomelo y hielo."],["Tragos","James Brown",12000,"Jaggermaister, menta en rama, azúcar, pomelo y hielo."],["Tragos","Mojito",8500,"Ron Blanco, menta en rama, lima y soda."],["Tragos","Daiquiri",8000,"Ron y pulpa de frutas."],["Tragos","Campari",8500,"Con pomelo o naranja."],["Tragos","Fernet Branca con Coca-Cola",8500,""],["Tragos","Branca Menta con Sprite",8500,""],["Tragos","Carpano Rosso con pomelo",7000,""],["Tragos","Punt e Mes con pomelo",7000,""],["Tragos","Vermuth Ferroviario",7000,""],["Tragos","Gin Tonic Beefeater",10500,""],["Tragos","Gin Tonic Tanqueray",10500,""],["Tragos","Gin Príncipe de los Apóstoles",8500,""],["Tragos","Gin tirado",8500,""],["Tragos","Negroni",8500,"Gin, Campari, vermuth rosso, chorro de soda, hielo y rodaja de naranja."],["Tragos","Old Fashioned",9500,"Whiskey, bitter, cáscara de naranja, hielo y azúcar."],["Tragos","Coche Bomba",10000,"Cerveza negra, whiskey y Baileys."],["Tragos","Lemon Beat",7500,"Cachaça, miel y limón."],["Tragos","Baileys Frozen",10000,"Baileys, Ron y helado americano."],["Tragos","Speed (Tragos)",5000,""],["Tragos","Medidas (Ron - Fernet - Campari)",7000,""],["Tragos","Medidas (Jagger - Baileys - Gin)",10000,""],["Tragos","Caipirinha",7500,""],["Tragos","Caipiroshka",7500,""],["Tragos","Gancia",7500,"Sprite y limón"],["Tragos","Cuba Libre",8500,""],["Bebidas","Jack Daniels",14000,"Whisky"],["Bebidas","J&B",10000,"Whisky"],["Bebidas","Jameson",10000,"Whisky"],["Bebidas","Johnnie Walker Red Label",10000,"Whisky"],["Bebidas","Santa Julia Malbec 750cc",15000,"Vino"],["Bebidas","Santa Julia Chardonnay 750cc",15000,"Vino"],["Bebidas","Etiqueta del Mes",18000,"Vino"],["Bebidas","Copa de vino",5500,"Vino"],["Bebidas","Extra Brut 187 / 750",13000,"Champagne"],["Bebidas","Gaseosas línea Coca-Cola",4000,"Bebidas sin Alcohol"],["Bebidas","Speed (Bebidas)",5000,"Bebidas sin Alcohol"],["Bebidas","Agua con y sin gas",4000,"Bebidas sin Alcohol"],["Bebidas","Agua saborizada",4000,"Bebidas sin Alcohol"],["Bebidas","Exprimido",5500,"Bebidas sin Alcohol"],["Bebidas","Limonada/Naranjada",5500,"Bebidas sin Alcohol"],["Bebidas","Licuados",6500,"Bebidas sin Alcohol"],["Bebidas","Milkshake",8500,"Bebidas sin Alcohol"],["Tapeos","Rabas",22500,""],["Tapeos","Langostinos rebozados",21000,""],["Tapeos","Triangulitos de muzzarella",13000,""],["Tapeos","Supremitas pastora",18500,""],["Tapeos","Aros de cebolla + dip",5000,""],["Tapeos","Empanadas x 2",7000,""],["Tapeos","Golden chicken más tres salsas",11000,"Barbacoa picante/ alioli / Cheddar."],["Tapeos","Salsas dip. extra",3000,"Barbacoa picante/ alioli / Cheddar."],["Tapeos","Tablita de fiambre para dos",26000,"Queso / salamin / crudo / longaniza."],["Tapeos","Brusquetas (dos a elección)",11000,"Crudo y tomate seco / Morcilla, queso crema y verdeo / Roquefort y nuez."],["Tapeos","Ravioles James B.",9000,"Ravioles de verdura fritos: a la provenzal, con dip de salsa golf y morrón."],["Tapeos","Milanesitas + Dip",15000,""],["Tapeos","Tortilla de Papa",9500,""],["Tapeos","Buñuelos de Acelga",9500,""],["Tapeos","Tequeños de queso (3) + dip",5500,""],["Tapeos","Papas Snack",2500,""],["Tapeos","Cazuela Cherrys",5000,""],["Tapeos","Cazuela Pategras",5000,""],["Tapeos","Cazuela De Berenjenas",5000,""],["Tapeos","Cazuelita de mani",0,""],["Papas","Papas Solas",8000,""],["Papas","Papas A Caballo (2 h.f.)",10000,""],["Papas","Papas Panceta",13000,"Panceta, cheddar y verdeo."],["Papas","Papas Mostaza con miel / Barbacoa picante",12000,""],["Papas","Papas A los tres quesos con jamón",12500,""],["Papas","Papas Veggies",13000,"Berenjenas, cebolla caramelizada, cherrys confitados y morrón."],["Papas","Papas Combinadas",13000,"2 salsas a elección"],["Papas","Papas Fungi",13000,"Champignon, cebolla, ajito y reduccion de cerveza honey."],["Pizzas","Pizza Muzza",20000,""],["Pizzas","Pizza Muzza (1/2)",10500,""],["Pizzas","Pizza Jamón y morrón",26000,""],["Pizzas","Pizza Jamón y morrón (1/2)",13500,""],["Pizzas","Pizza Fugazza con muzza",22000,""],["Pizzas","Pizza Fugazza con muzza (1/2)",11500,""],["Pizzas","Pizza Anchoas",28000,""],["Pizzas","Pizza Anchoas (1/2)",14500,""],["Pizzas","Pizza Napolitana",26000,""],["Pizzas","Pizza Napolitana (1/2)",13500,""],["Pizzas","Pizza Capresse",26000,""],["Pizzas","Pizza Capresse (1/2)",13500,""],["Pizzas","Pizza Roquefort y nuez",28000,""],["Pizzas","Pizza Roquefort y nuez (1/2)",14500,""],["Pizzas","Pizza Calabresa",26000,""],["Pizzas","Pizza Calabresa (1/2)",13500,""],["Pizzas","Pizza Tres quesos con jamón",26000,""],["Pizzas","Pizza Tres quesos con jamón (1/2)",13500,""],["Pizzas","Pizza Pollo al verdeo",26000,""],["Pizzas","Pizza Pollo al verdeo (1/2)",13500,""],["Pizzas","Pizza Pollo con salsa golf",26000,""],["Pizzas","Pizza Pollo con salsa golf (1/2)",13500,""],["Pizzas","Pizza Rúcula y crudo",28000,""],["Pizzas","Pizza Rúcula y crudo (1/2)",14500,""],["Pizzas","Pizza Panceta y ajíes",28000,""],["Pizzas","Pizza Panceta y ajíes (1/2)",14500,""],["Pizzas","Pizza Panceta y huevo",28000,""],["Pizzas","Pizza Panceta y huevo (1/2)",14500,""],["Pizzas","Pizza Jamon y anana",28000,""],["Pizzas","Pizza Jamon y anana (1/2)",14500,""],["Pizzas","Pizza Palmitos",28000,""],["Pizzas","Pizza Palmitos (1/2)",14500,""],["Hamburguesas","Hamburguesa Rocky",17000,"Queso, roquefort y rúcula."],["Hamburguesas","Hamburguesa Cheddar",17000,"Cheddar, panceta y cebolla."],["Hamburguesas","Hamburguesa Cerebro",17000,"Queso, huevo estrellado y ajíes."],["Hamburguesas","Hamburguesa Buzz A",17000,"Guacamole, queso, tomate y rúcula."],["Hamburguesas","Hamburguesa Completa",16000,"Jamón, queso, lechuga, tomate y huevo."],["Sandwichs","Sándwich Crudo, manteca y queso",15000,"Sándwiches Fríos"],["Sandwichs","Sándwich Lechuga, zanahoria, tomate, palta y queso crema",14000,"Sándwiches Fríos"],["Sandwichs","Sándwich Guacamole, queso, tomate y rúcula",15000,"Sándwiches Fríos"],["Sandwichs","Sándwich Jamón y queso",9000,"Sándwiches Calientes"],["Sandwichs","Sándwich Pollo, queso, jamón crudo y ananá",15000,"Sándwiches Calientes"],["Sandwichs","Sándwich Pollo, muzza, roquefort, rúcula, lechuga bañadas en oliva y mix de semillas",14000,"Sándwiches Calientes"],["Sandwichs","Sándwich Cheddar, cebolla caramelizada, tomates secos, berenjenas asadas y aceitunas negras",14000,"Sándwiches Calientes"],["Sandwichs","Sándwich Bondiola a la barbacoa con zanahoria, repollo colorado, mayonesa, mostaza y crema",17500,"Sándwiches Calientes"],["Sandwichs","Sándwich Milanesa",22000,"Sándwiches Calientes"],["Ensaladas","Ensalada Chila",15000,"Palta, huevo duro, queso tybo, pimienta, zanahoria, nuez picada, cachaça, vinagre y oliva."],["Ensaladas","Ensalada Capresse",15000,"Cherry, albahaca, queso y aceitunas negras."],["Ensaladas","Ensalada Palta",15000,"Palta, lechuga, rucula, cherry, ciboulette y salsa de soja."],["Ensaladas","Ensalada Abraxas",15000,"Pollo, zanahoria, rúcula, ananá, queso, mix de hojas verdes y mix de semillas."],["Ensaladas","Ensalada Leia",15000,"Rúcula, jamón crudo, cherry, parmesano y mix de semillas."],["Ensaladas","Ensalada Margót",15000,"Rúcula, pera, roquefort y nuez."],["Milanesas","Milanesa Sola",19000,""],["Milanesas","Milanesa Napolitana / Capresse",23000,""],["Milanesas","Milanesa Chila",23000,"Cheddar con cebolla caramelizada, morrón, zanahoria y mix de semillas."],["Milanesas","Milanesa Rocky",23000,"Rúcula con salsa de roquefort y nuez picada."],["Sin T.A.C.C.","Sin T.A.C.C.: Hamburguesa",16000,"Tomate, cebolla, lechuga y papas a caballo."],["Sin T.A.C.C.","Sin T.A.C.C.: Pizza",16000,"Consultar variedades."],["Sin T.A.C.C.","Sin T.A.C.C.: Pollo grillé",19000,"Con guarnición."],["Postres","Helado dos Bochas",8000,""],["Postres","Brownie con Helado",8000,""],["Postres","Don Pedro",9500,""],["Postres","Mousse de Chocolate",5500,""]];
 
 /* ---------- iconos (trazo, estilo lineal) ---------- */
 const ICONS={
@@ -195,105 +196,132 @@ heart:'<path d="M20.8 5.6a5.2 5.2 0 0 0-7.4 0L12 7l-1.4-1.4a5.2 5.2 0 0 0-7.4 7.
 const I=(n,c='')=>`<svg class="ic ${c}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]||''}</svg>`;
 
 /* ---------- datos ---------- */
-const DU=()=>[{id:1,name:'Admin',role:'admin',pin:'1234'},{id:2,name:'Mozo',role:'mozo',pin:'0000'},{id:3,name:'Cocina',role:'cocina',pin:'1111'}];
-const demo=()=>({seq:1000,tables:Array.from({length:8},(_,i)=>({id:i+1})),orders:[],res:[],users:DU(),cfg:{name:'Resto',addr:'',tip:10,auto:false},menu:MENU.map((p,i)=>({id:i+1,cat:p[0],name:p[1],price:p[2],d:p[3]}))});
-const clean=n=>String(n).replace(/Papas Calavera/i,'Papas Panceta').replace(/Hamburguesa Calavera/i,'Hamburguesa Cheddar').replace(/\s*Calavera/gi,'');
-let S,V={tab:'salon',table:null,cat:'Birras',rs:0,q:'',lu:null,err:'',rc:null},IP=null;
+const Core=window.Core,ROLES=Core.ROLES,TK='resto.tok';
 const ss=(k,v)=>{try{if(v===undefined)return sessionStorage.getItem(k);v===null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v)}catch(e){}return null};
-let SESS=ss(SK);
-function fix(){const d=demo();if(!Array.isArray(S.users)||!S.users.length)S.users=d.users;S.res=S.res||[];S.cfg=Object.assign({},d.cfg,S.cfg||{});S.tables=S.tables||d.tables;S.orders=S.orders||[];
- S.menu=S.menu.filter(p=>!/salchis\s*pop/i.test(p.name));S.menu.forEach(p=>{p.name=clean(p.name)})}
-function load(){try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!S||!S.menu)S=demo();fix()}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+let VER=0,NET=false,NAME='Resto',DFLT=false,TOKEN=ss(TK),SESS=ss(SK),SKEW=0,PUB=[],CONN=true,ES=null,IP=null,S;
+const pad2=n=>String(n).padStart(2,'0'),dstr=(t=Date.now())=>{const d=new Date(t);return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())},dback=n=>dstr(Date.now()-n*864e5);
+let V={tab:'salon',table:null,cat:'Birras',rs:0,q:'',lu:null,err:'',rc:null,h:{from:dback(6),to:dstr(),rows:null,busy:false}};
+const now=()=>Date.now()+SKEW;
+const stub=()=>{S={seq:0,tables:[],orders:[],res:[],menu:[],users:PUB,cfg:{name:NAME,addr:'',tip:10,auto:false}}};
+function load(){try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!S||!S.menu)S=Core.demo();Core.fix(S)}
+function save(){if(NET)return;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 const cur=()=>S.users.find(u=>String(u.id)===String(SESS));
-const open=t=>S.orders.find(o=>o.table===t&&o.status==='open');
-const resv=t=>S.res.find(r=>r.table===t);
-const tot=o=>o.items.reduce((a,i)=>a+i.price*i.qty,0);
-const calc=o=>{const sub=tot(o),pct=o.tip==null?S.cfg.tip:o.tip,tip=Math.round(sub*pct/100),grand=sub+tip,split=o.split||1,pays=o.pays||[],paid=pays.reduce((a,p)=>a+p.amt,0),n=pays.length,share=n>=split-1?grand-paid:Math.round(grand/split);return{sub,pct,tip,grand,split,paid,n,share}};
-const find=id=>{for(const o of S.orders)if(o.status==='open'){const i=o.items.find(i=>i.id==id);if(i)return[o,i]}return[]};
+const open=t=>Core.open(S,t),resv=t=>Core.resv(S,t),tot=Core.tot,locked=Core.locked,calc=o=>Core.calc(S,o);
 const nm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
 function list(){const q=nm(V.q).trim().replace(/^#\s*/,'');return q?S.menu.filter(p=>/^\d+$/.test(q)?p.id===+q:nm(p.name+' '+(p.d||'')).includes(q)):S.menu.filter(p=>V.cat==='Todos'||p.cat===V.cat)}
 const prods=()=>list().map(p=>`<button class="prod" data-a="add" data-v="${p.id}"><span class="num">#${p.id}</span><span>${E(p.name)}</span>${p.d?`<small>${E(p.d)}</small>`:''}<b>${M(p.price)}</b></button>`).join('')||'<p class="mt">No hay productos con esa búsqueda.</p>';
 const ST={new:'Sin enviar',sent:'En cocina',ready:'Listo para servir',served:'Servido'};
-const ROLES={admin:'Administrador',mozo:'Mozo',cocina:'Cocina'};
-const TABS=[['salon','Salón','grid',['admin','mozo']],['cocina','Cocina','flame',['admin','cocina']],['reservas','Reservas','cal',['admin','mozo']],['carta','Carta','book',['admin']],['reportes','Reportes','chart',['admin']],['ajustes','Ajustes','sliders',['admin']]];
-const MZ=['admin','mozo'],AD=['admin'],KT=['admin','cocina'];
-const ACT={table:MZ,addt:AD,add:MZ,inc:MZ,dec:MZ,send:MZ,ready:KT,served:MZ,pay:MZ,tip:MZ,split:MZ,pcom:MZ,ppre:MZ,pticket:MZ,closerc:MZ,resadd:MZ,rescancel:MZ,resseat:MZ,newp:AD,del:AD,reset:AD,useradd:AD,userdel:AD};
-const can=a=>{const r=ACT[a],u=cur();return !r||(u&&r.includes(u.role))};
+const MZ=['admin','mozo'],AD=['admin'];
+const TABS=[['salon','Salón','grid',['admin','mozo']],['cocina','Cocina','flame',['admin','cocina']],['reservas','Reservas','cal',['admin','mozo']],['carta','Carta','book',['admin']],['reportes','Reportes','chart',['admin']],['historial','Historial','clock',['admin']],['ajustes','Ajustes','sliders',['admin']]];
+const VACT={table:MZ,pcom:MZ,ppre:MZ,pticket:MZ,closerc:MZ,resseat:MZ,hbuscar:AD,hcsv:AD};
+const can=a=>{const r=Core.ACT[a]||VACT[a],u=cur();return !r||(u&&r.includes(u.role))};
+let TT;function toast(m){let e=document.getElementById('toast');if(!e){e=document.createElement('div');e.id='toast';e.setAttribute('role','status');document.body.appendChild(e)}e.textContent=m;e.className='toast show';clearTimeout(TT);TT=setTimeout(()=>e.className='toast',3500)}
 
 /* ---------- impresión térmica ---------- */
 function printHTML(h){const p=document.getElementById('prt');p.innerHTML=h;setTimeout(()=>window.print(),60)}
 addEventListener('afterprint',()=>{const p=document.getElementById('prt');if(p)p.innerHTML=''});
 const trow=(a,b,c='')=>`<div class="t-row ${c}"><span>${a}</span><span>${b}</span></div>`;
 const dt=d=>new Date(d).toLocaleString('es-AR',{dateStyle:'short',timeStyle:'short'});
-function head(t){const c=S.cfg,u=cur();return `<div class="t-c t-b t-lg">${E(c.name)}</div>${c.addr?`<div class="t-c">${E(c.addr)}</div>`:''}<div class="t-c t-b">${t}</div><div class="t-hr"></div>`}
+function head(t){const c=S.cfg;return `<div class="t-c t-b t-lg">${E(c.name)}</div>${c.addr?`<div class="t-c">${E(c.addr)}</div>`:''}<div class="t-c t-b">${t}</div><div class="t-hr"></div>`}
 function comandaHTML(o){const u=cur(),its=o.items.filter(i=>i.b&&i.b===o.lb);
  return head('COMANDA')+`<div class="t-xl">MESA ${o.table}</div>${trow(dt(o.lb),u?E(u.name):'')}<div class="t-hr"></div>${its.map(i=>`<div class="t-it">${i.qty} x ${E(i.name)}</div>`).join('')}<div class="t-hr"></div>`}
 function ticketHTML(o,final){const c=calc(o),u=cur();
- return head(final?'TICKET':'PRE-CUENTA')+trow('Mesa '+o.table,dt(final&&o.paidAt?o.paidAt:Date.now()))+(u?trow('Atendió',E(u.name)):'')+`<div class="t-hr"></div>`+o.items.map(i=>trow(`${i.qty} x ${E(i.name)}`,M(i.price*i.qty))).join('')+`<div class="t-hr"></div>`+trow('Subtotal',M(c.sub))+(c.tip?trow(`Propina ${c.pct}%`,M(c.tip)):'')+trow('TOTAL',M(c.grand),'t-b t-lg')+
+ return head(final?'TICKET':'PRE-CUENTA')+trow('Mesa '+o.table,dt(final&&o.paidAt?o.paidAt:Date.now()))+(u?trow('Atendió',E(o.mozo||u.name)):'')+`<div class="t-hr"></div>`+o.items.map(i=>trow(`${i.qty} x ${E(i.name)}`,M(i.price*i.qty))).join('')+`<div class="t-hr"></div>`+trow('Subtotal',M(c.sub))+(c.tip?trow(`Propina ${c.pct}%`,M(c.tip)):'')+trow('TOTAL',M(c.grand),'t-b t-lg')+
  (c.split>1?`<div class="t-hr"></div>${trow('Dividido entre',c.split)}${trow('Por persona (aprox.)',M(Math.round(c.grand/c.split)))}`:'')+
  (final&&o.pays&&o.pays.length?`<div class="t-hr"></div>`+o.pays.map((p,i)=>trow(`Pago ${i+1}: ${E(p.m)}`,M(p.amt))).join(''):'')+
  `<div class="t-hr"></div><div class="t-c">¡Gracias por su visita!</div><div class="t-c">Documento no válido como factura</div>`}
 function printComanda(o){if(o&&o.lb)printHTML(comandaHTML(o))}
 
+/* ---------- red (modo servidor) ---------- */
+async function api(path,body){
+ const r=await fetch(path,{method:body?'POST':'GET',headers:{'Content-Type':'application/json',...(TOKEN?{Authorization:'Bearer '+TOKEN}:{})},body:body?JSON.stringify(body):undefined,cache:'no-store'});
+ if(r.status===401&&TOKEN){doLogout();toast('La sesión venció. Volvé a ingresar.');throw new Error('401')}
+ const j=await r.json().catch(()=>({}));if(!r.ok&&!j.err)j.err='Error '+r.status;return j}
+const accept=j=>{if(!j.state)return false;if(j.v!=null){if(j.v<VER)return true;VER=j.v}S=j.state;SKEW=j.now-Date.now();CONN=true;return true};
+async function pull(){try{const j=await api('/api/state');if(accept(j)){render(true);return true}}catch(e){if(e.message!=='401'){CONN=false;render(true)}}return false}
+function connect(){if(ES)ES.close();ES=new EventSource('/api/events?t='+encodeURIComponent(TOKEN));ES.onmessage=()=>pull();ES.onopen=()=>{pull()};ES.onerror=()=>{if(CONN){CONN=false;render(true)}}}
+async function loadPub(){try{const j=await api('/api/users');PUB=j.users||[];DFLT=!!j.dflt}catch(e){PUB=[]}}
+async function dispatch(a,p){
+ if(!NET){const r=Core.apply(S,a,p,cur());if(!r.err)save();return r}
+ try{const j=await api('/api/act',{a,p});accept(j);return j.result||{err:j.err}}
+ catch(e){if(e.message!=='401')toast('No se pudo conectar con el servidor. Revisá el WiFi.');return{err:'net'}}}
+
 /* ---------- acciones ---------- */
-const locked=o=>o&&o.pays&&o.pays.length;
-const A={
+const val=id=>{const e=document.getElementById(id);return e?e.value.trim():''};
+const VIEW={
  tab:v=>{V.tab=v;V.table=null;V.rc=null},
  table:v=>{V.table=+v;V.q='';V.rc=null},
  back:()=>{V.table=null},
  cat:v=>{V.cat=v;V.q=''},
- addt:()=>{S.tables.push({id:S.tables.length?Math.max(...S.tables.map(t=>t.id))+1:1})},
- add:v=>{const p=S.menu.find(p=>p.id==v);if(!p)return;let o=open(V.table);if(locked(o))return;if(!o){o={id:S.seq++,table:V.table,status:'open',items:[]};S.orders.push(o);S.res=S.res.filter(r=>r.table!==V.table)}
-  const x=o.items.find(i=>i.pid===p.id&&i.s==='new');x?x.qty++:o.items.push({id:S.seq++,pid:p.id,name:p.name,price:p.price,qty:1,s:'new'})},
- inc:v=>{const[o,i]=find(v);if(i&&!locked(o))i.qty++},
- dec:v=>{const[o,i]=find(v);if(!i||locked(o))return;if(--i.qty<1)o.items=o.items.filter(x=>x!==i);if(!o.items.length)S.orders=S.orders.filter(x=>x!==o)},
- send:()=>{const o=open(V.table);if(!o)return;const b=Date.now();o.items.forEach(i=>{if(i.s==='new'){i.s='sent';i.t=b;i.b=b}});o.lb=b;if(S.cfg.auto)printComanda(o)},
+ closerc:()=>{V.rc=null},
  pcom:()=>printComanda(open(V.table)),
  ppre:()=>{const o=open(V.table);if(o)printHTML(ticketHTML(o,false))},
  pticket:v=>{const o=S.orders.find(x=>x.id==v);if(o)printHTML(ticketHTML(o,true))},
- closerc:()=>{V.rc=null},
- ready:v=>{const[o,i]=find(v);if(i)i.s='ready'},
- served:v=>{const[o,i]=find(v);if(i)i.s='served'},
- tip:v=>{const o=open(V.table);if(o&&!locked(o))o.tip=+v},
- split:v=>{const o=open(V.table);if(o&&!locked(o))o.split=Math.min(20,Math.max(1,(o.split||1)+(+v)))},
- pay:v=>{const o=open(V.table);if(!o)return;const c=calc(o);o.pays=o.pays||[];o.pays.push({m:v,amt:c.share});
-  if(o.pays.length>=c.split){o.status='paid';o.method=[...new Set(o.pays.map(p=>p.m))].join(' + ');o.sub=c.sub;o.tipAmt=c.tip;o.tipPct=c.pct;o.total=c.grand;o.paidAt=Date.now();V.rc=o.id;V.table=null}},
- resadd:()=>{const t=+document.getElementById('rs-t').value,n=document.getElementById('rs-n').value.trim();if(!t||!n||open(t)||resv(t))return;
-  S.res.push({id:S.seq++,table:t,name:n,time:document.getElementById('rs-h').value,pax:+document.getElementById('rs-p').value||0})},
- rescancel:v=>{S.res=S.res.filter(r=>r.id!=v)},
  resseat:v=>{const r=S.res.find(r=>r.id==v);if(r){V.tab='salon';V.table=r.table;V.q=''}},
- newp:()=>{const n=document.getElementById('np-n').value.trim(),c=document.getElementById('np-c').value.trim()||'Otros',p=+document.getElementById('np-p').value;if(n&&p>=0)S.menu.push({id:Math.max(0,...S.menu.map(x=>x.id))+1,name:n,cat:c,price:p})},
- del:v=>{S.menu=S.menu.filter(p=>p.id!=v)},
- reset:()=>{if(!V.rs){V.rs=1;return}const u=S.users,c=S.cfg;S=demo();S.users=u;S.cfg=c;V.rs=0},
- useradd:()=>{const n=document.getElementById('nu-n').value.trim(),r=document.getElementById('nu-r').value,p=document.getElementById('nu-p').value.trim();if(n&&ROLES[r]&&/^\d{4,8}$/.test(p))S.users.push({id:S.seq++,name:n,role:r,pin:p})},
- userdel:v=>{const u=S.users.find(x=>x.id==v),me=cur();if(!u||u.id===me.id)return;if(u.role==='admin'&&S.users.filter(x=>x.role==='admin').length<2)return;S.users=S.users.filter(x=>x!==u)},
  pick:v=>{V.lu=+v;V.err=''},
- login:()=>{const u=S.users.find(x=>x.id===V.lu),el=document.getElementById('pin');if(!u||!el)return;if(el.value===String(u.pin)){SESS=String(u.id);ss(SK,SESS);V.lu=null;V.err='';V.table=null;V.rc=null;V.tab=TABS.find(t=>t[3].includes(u.role))[0]}else V.err='PIN incorrecto'},
  unpick:()=>{V.lu=null;V.err=''},
- logout:()=>{SESS=null;ss(SK,null);V.lu=null;V.table=null;V.rc=null;V.err=''},
+ retry:()=>location.reload(),
  install:()=>{if(IP){IP.prompt();IP=null}}
 };
-function run(a,v){if(!can(a))return;const f=A[a];if(f){f(v);if(a!=='reset')V.rs=0;save();render()}}
+const DATA={
+ addt:()=>({}),add:v=>({table:V.table,pid:+v}),inc:v=>({id:+v}),dec:v=>({id:+v}),send:()=>({table:V.table}),ready:v=>({id:+v}),served:v=>({id:+v}),
+ tip:v=>({table:V.table,pct:+v}),split:v=>({table:V.table,d:+v}),pay:v=>({table:V.table,m:v}),
+ resadd:()=>({t:+val('rs-t'),n:val('rs-n'),h:val('rs-h'),pax:val('rs-p')}),rescancel:v=>({id:+v}),
+ newp:()=>({n:val('np-n'),c:val('np-c'),p:val('np-p')}),del:v=>({id:+v}),reset:()=>({}),
+ useradd:()=>({n:val('nu-n'),r:val('nu-r'),p:val('nu-p')}),userdel:v=>({id:+v})
+};
+async function run(a,v){
+ if(!can(a))return;
+ if(a==='login')return doLogin();
+ if(a==='logout')return doLogout();
+ if(a==='hbuscar')return hsearch();
+ if(a==='hcsv')return hcsv();
+ if(VIEW[a]){if(a!=='reset')V.rs=0;VIEW[a](v);render();return}
+ if(a==='reset'&&!V.rs){V.rs=1;render();return}
+ V.rs=0;
+ const r=await dispatch(a,DATA[a]?DATA[a](v):{});
+ if(r.err&&r.err!=='net')toast(r.err);
+ if(a==='pay'&&r.rc){V.rc=r.rc;V.table=null}
+ if(a==='send'&&r.lb&&S.cfg.auto)printComanda(open(V.table));
+ render()}
+async function doLogin(){
+ const el=document.getElementById('pin'),u=S.users.find(x=>x.id===V.lu);if(!el||!u)return;
+ if(!NET){if(el.value===String(u.pin)){SESS=String(u.id);ss(SK,SESS);V.lu=null;V.err='';V.tab=TABS.find(t=>t[3].includes(u.role))[0]}else V.err='PIN incorrecto';render();return}
+ const j=await api('/api/login',{id:u.id,pin:el.value}).catch(()=>({err:'No se pudo conectar con el servidor'}));
+ if(j.token){TOKEN=j.token;ss(TK,TOKEN);SESS=String(j.user.id);ss(SK,SESS);V.lu=null;V.err='';V.table=null;V.rc=null;V.tab=TABS.find(t=>t[3].includes(j.user.role))[0];await pull();connect()}
+ else V.err=j.err||'PIN incorrecto';
+ render()}
+async function doLogout(){
+ const t=TOKEN;if(ES){ES.close();ES=null}SESS=null;TOKEN=null;ss(SK,null);ss(TK,null);V.lu=null;V.table=null;V.rc=null;V.err='';
+ VER=0;if(NET){if(t)fetch('/api/logout',{method:'POST',headers:{Authorization:'Bearer '+t}}).catch(()=>{});await loadPub();stub()}
+ render()}
+async function hsearch(){
+ V.h.busy=true;render();let rows=[];
+ if(NET){const j=await api(`/api/history?from=${V.h.from}&to=${V.h.to}`).catch(()=>({err:'No se pudo conectar'}));if(j.err)toast(j.err);rows=j.rows||[]}
+ else rows=S.orders.filter(o=>o.status==='paid'&&dstr(o.paidAt)>=V.h.from&&dstr(o.paidAt)<=V.h.to);
+ V.h.rows=rows.map(o=>({...o,sub:o.sub!=null?o.sub:o.total,tipAmt:o.tipAmt||0})).sort((a,b)=>b.paidAt-a.paidAt);V.h.busy=false;render()}
+function hcsv(){
+ const q=s=>'"'+String(s==null?'':s).replace(/"/g,'""')+'"',rows=V.h.rows||[];
+ const lines=[['Fecha','Hora','Mesa','Mozo','Subtotal','Propina','Total','Medios de pago','Productos'].join(';')].concat(rows.map(o=>{const d=new Date(o.paidAt);return [dstr(o.paidAt),pad2(d.getHours())+':'+pad2(d.getMinutes()),o.table,q(o.mozo||''),o.sub,o.tipAmt,o.total,q(o.method),q(o.items.map(i=>i.qty+'x '+i.name).join(', '))].join(';')}));
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}));a.download=`ventas_${V.h.from}_a_${V.h.to}.csv`;document.body.appendChild(a);a.click();a.remove()}
+
 document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b&&!b.disabled)run(b.dataset.a,b.dataset.v)});
-function userEdit(el){const u=S.users.find(x=>x.id==el.dataset.id);if(!u)return;const k=el.dataset.u,v=el.value.trim();
- if(k==='name'&&v)u.name=v;
- else if(k==='pin'&&/^\d{4,8}$/.test(v))u.pin=v;
- else if(k==='role'&&ROLES[v]&&(u.role!=='admin'||v==='admin'||S.users.filter(x=>x.role==='admin').length>1))u.role=v}
-document.addEventListener('change',e=>{const el=e.target,u=cur();if(!u||u.role!=='admin')return;
- if(el.dataset.price){const p=S.menu.find(p=>p.id==el.dataset.price),n=+el.value;if(p&&n>=0)p.price=n}
- else if(el.dataset.cfg){const k=el.dataset.cfg;S.cfg[k]=el.type==='checkbox'?el.checked:k==='tip'?+el.value:el.value.trim()}
- else if(el.dataset.u)userEdit(el);else return;
- save();render()});
+document.addEventListener('change',async e=>{const el=e.target,u=cur();if(!u||u.role!=='admin')return;let r;
+ if(el.dataset.h){V.h[el.dataset.h]=el.value;return}
+ if(el.dataset.price)r=await dispatch('price',{id:+el.dataset.price,val:el.value});
+ else if(el.dataset.cfg)r=await dispatch('cfg',{k:el.dataset.cfg,val:el.type==='checkbox'?el.checked:el.value});
+ else if(el.dataset.u)r=await dispatch('useredit',{id:+el.dataset.id,k:el.dataset.u,v:el.value});
+ else return;
+ if(r&&r.err&&r.err!=='net')toast(r.err);render()});
 document.addEventListener('input',e=>{if(e.target.id==='q'){V.q=e.target.value;const g=document.getElementById('pg');if(g)g.innerHTML=prods()}});
-document.addEventListener('keydown',e=>{if(e.key!=='Enter')return;
+document.addEventListener('keydown',async e=>{if(e.key!=='Enter')return;
  if(e.target.id==='pin'){run('login');return}
- if(e.target.id==='q'&&can('add')){const r=list();if(r.length===1&&V.table){A.add(r[0].id);V.q='';save();render();const q=document.getElementById('q');if(q)q.focus()}}});
-addEventListener('storage',e=>{if(e.key===KEY){const a=document.activeElement;load();if(a&&a.id==='pin')return;render()}});
-addEventListener('online',()=>render());addEventListener('offline',()=>render());
-addEventListener('beforeinstallprompt',e=>{e.preventDefault();IP=e;render()});
-addEventListener('appinstalled',()=>{IP=null;render()});
-setInterval(()=>{if(cur()&&V.tab==='cocina')render()},30000);
+ if(e.target.id==='q'&&V.table&&can('add')){const r=list();if(r.length===1){V.q='';await dispatch('add',{table:V.table,pid:r[0].id});render();const q=document.getElementById('q');if(q)q.focus()}}});
+addEventListener('storage',e=>{if(!NET&&e.key===KEY){load();render(true)}});
+addEventListener('online',()=>render(true));addEventListener('offline',()=>render(true));
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();IP=e;render(true)});
+addEventListener('appinstalled',()=>{IP=null;render(true)});
+setInterval(()=>{if(cur()&&V.tab==='cocina')render(true)},30000);
 
 /* ---------- vistas ---------- */
 const PAYI={Efectivo:'cash',Tarjeta:'card',QR:'qr',Transferencia:'bank'};
@@ -335,7 +363,7 @@ function orderView(){
 function cocina(){
  const rows=S.orders.filter(o=>o.status==='open').flatMap(o=>o.items.filter(i=>i.s==='sent').map(i=>({...i,table:o.table}))).sort((a,b)=>a.t-b.t);
  if(!rows.length)return `<div class="card"><h3>${I('flame')}Cocina</h3><p class="mt">No hay pedidos pendientes. Cuando el salón envíe una comanda, aparece acá.</p></div>`;
- return `<div class="card kit"><h3>${I('flame')}Pendientes en cocina</h3>${rows.map(i=>{const m=Math.floor((Date.now()-i.t)/60000);
+ return `<div class="card kit"><h3>${I('flame')}Pendientes en cocina</h3>${rows.map(i=>{const m=Math.floor((now()-i.t)/60000);
   return `<div class="ln"><div class="who2"><span class="rtag" style="background:var(--acs);color:var(--ac)">${i.table}</span><div><b>${i.qty}× ${E(i.name)}</b><small class="${m>=15?'late':''}">${I('clock')} Hace ${m} min</small></div></div><button class="pri" data-a="ready" data-v="${i.id}">${I('check')}Listo</button></div>`}).join('')}</div>`}
 function reservas(){
  const free=S.tables.filter(t=>!open(t.id)&&!resv(t.id)),rs=[...S.res].sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99'));
@@ -362,22 +390,45 @@ function ajustes(){const me=cur();
  <div class="sep"></div><div class="form"><label>Nuevo usuario<input id="nu-n" placeholder="Nombre" style="width:160px"></label><label>Rol<select id="nu-r">${Object.entries(ROLES).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></label><label>PIN (4 a 8 números)<input id="nu-p" inputmode="numeric" maxlength="8" placeholder="0000" style="width:100px"></label><button class="pri" data-a="useradd">${I('plus')}Agregar</button></div>
  <p class="hint">Mozo: salón y reservas. Cocina: solo la pantalla de cocina. Administrador: todo, incluido carta, reportes y ajustes.</p></div>`}
 function login(){
- const u=S.users.find(x=>x.id===V.lu),dflt=S.users.some(x=>x.role==='admin'&&x.pin==='1234');
+ const u=S.users.find(x=>x.id===V.lu),dflt=NET?DFLT:S.users.some(x=>x.role==='admin'&&x.pin==='1234');
+ if(!S.users.length)return `<div class="lg"><div class="card lgc"><div class="logo">${I('wifioff')}</div><h2 style="text-align:center">Sin conexión con el servidor</h2><p class="mt" style="text-align:center">Revisá que la PC del local esté encendida con Resto abierto y que este equipo esté en el mismo WiFi.</p><button class="pri big" data-a="retry">Reintentar</button></div></div>`;
  return `<div class="lg"><div class="card lgc"><div class="logo">${I('utensils')}</div><h2 style="text-align:center">${E(S.cfg.name)}</h2><p class="mt" style="text-align:center;margin-top:0">${u?'Ingresá tu PIN':'¿Quién va a trabajar?'}</p>
  ${u?`<div class="urow card" style="display:flex;align-items:center;gap:10px;margin-bottom:12px;box-shadow:none">${I('user')}<div><b>${E(u.name)}</b><small class="mt" style="display:block">${ROLES[u.role]}</small></div></div><input id="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="PIN" aria-label="PIN" style="width:100%;font-size:22px;text-align:center;letter-spacing:.3em">${V.err?`<p class="err" role="alert">${V.err}</p>`:''}<div class="acts" style="margin-top:12px"><button data-a="unpick">${I('back')}Cambiar</button><button class="pri" data-a="login" style="flex:1">${I('lock')}Entrar</button></div>`
  :S.users.map(x=>`<button class="urow" data-a="pick" data-v="${x.id}">${I(x.role==='cocina'?'flame':x.role==='admin'?'sliders':'user')}<span><b>${E(x.name)}</b><small>${ROLES[x.role]}</small></span></button>`).join('')}
  ${dflt&&!u?'<p class="hint" style="text-align:center">PIN inicial: Admin 1234 · Mozo 0000 · Cocina 1111. Cambialos en Ajustes.</p>':''}</div></div>`}
-function render(){
+function historial(){
+ const h=V.h,rows=h.rows;
+ let out=`<div class="card"><h3>${I('clock')}Historial de ventas</h3><div class="form"><label>Desde<input type="date" data-h="from" value="${h.from}" style="width:160px"></label><label>Hasta<input type="date" data-h="to" value="${h.to}" style="width:160px"></label><button class="pri" data-a="hbuscar" ${h.busy?'disabled':''}>${I('search')}Buscar</button>${rows&&rows.length?`<button data-a="hcsv">${I('download')}Exportar CSV</button>`:''}</div>${NET?'':'<p class="hint">Modo local: solo se ven las ventas guardadas en este navegador.</p>'}</div>`;
+ if(!rows)return out+'<p class="mt" style="margin-top:14px">Elegí un rango de fechas y tocá Buscar.</p>';
+ if(!rows.length)return out+'<div class="card"><p class="mt">No hay ventas en ese rango.</p></div>';
+ const sum=rows.reduce((a,o)=>a+o.sub,0),tips=rows.reduce((a,o)=>a+o.tipAmt,0);
+ out+=`<div class="kpis" style="margin-top:14px"><div class="card kpi"><span class="mt">Pedidos</span><h2>${rows.length}</h2></div><div class="card kpi"><span class="mt">Ventas</span><h2>${M(sum)}</h2></div><div class="card kpi"><span class="mt">Propinas</span><h2>${M(tips)}</h2></div><div class="card kpi"><span class="mt">Total cobrado</span><h2>${M(sum+tips)}</h2></div></div>`;
+ return out+`<div class="card">${rows.slice(0,300).map(o=>`<div class="ln"><div class="who2"><span class="rtag">${o.table}</span><div><b>${M(o.total)}</b> <span class="mt">· ${E(o.method)}</span><small>${dt(o.paidAt)}${o.mozo?' · '+E(o.mozo):''}</small><small>${o.items.map(i=>i.qty+'× '+E(i.name)).join(', ')}</small></div></div></div>`).join('')}${rows.length>300?`<p class="hint">Se muestran los primeros 300. El CSV incluye todos.</p>`:''}</div>`}
+function draw(){
  const U=cur(),app=document.getElementById('app');
  if(!U){app.innerHTML=login();if(V.lu){const p=document.getElementById('pin');if(p)p.focus()}return}
  const tabs=TABS.filter(t=>t[3].includes(U.role));if(!tabs.some(t=>t[0]===V.tab)){V.tab=tabs[0][0];V.table=null}
- const pend=S.orders.flatMap(o=>o.status==='open'?o.items:[]).filter(i=>i.s==='sent').length,views={salon,cocina,reservas,carta,reportes,ajustes};
+ const pend=S.orders.flatMap(o=>o.status==='open'?o.items:[]).filter(i=>i.s==='sent').length,views={salon,cocina,reservas,carta,reportes,historial,ajustes};
+ const off=NET?(!CONN?'Sin conexión con el servidor':''):(navigator.onLine===false?'Sin conexión':'');
  app.innerHTML=`<header class="hd"><div class="brand"><span class="logo">${I('utensils')}</span><span class="bn">${E(S.cfg.name)}</span></div>
  <nav class="nav" aria-label="Secciones">${tabs.map(([k,l,ic])=>`<button class="${V.tab===k?'on':''}" data-a="tab" data-v="${k}" ${V.tab===k?'aria-current="page"':''}>${I(ic)}<span>${l}</span>${k==='cocina'&&pend?`<span class="badge" aria-label="${pend} pendientes">${pend}</span>`:''}</button>`).join('')}</nav>
- <div class="hr sp">${navigator.onLine===false?`<span class="chip off">${I('wifioff')}Sin conexión</span>`:''}${IP?`<button data-a="install" style="min-height:36px">${I('download')}Instalar</button>`:''}<span class="chip who">${I('user')}<span class="nm"><b>${E(U.name)}</b>${nm(U.name)===nm(ROLES[U.role])?'':` <small>${ROLES[U.role]}</small>`}</span></span><button class="ib ghost" data-a="logout" aria-label="Cerrar sesión" title="Cerrar sesión">${I('logout')}</button></div></header><main>${views[V.tab]()}</main>`;
+ <div class="hr sp">${off?`<span class="chip off" role="status">${I('wifioff')}${off}</span>`:''}${IP?`<button data-a="install" style="min-height:36px">${I('download')}Instalar</button>`:''}<span class="chip who">${I('user')}<span class="nm"><b>${E(U.name)}</b>${nm(U.name)===nm(ROLES[U.role])?'':` <small>${ROLES[U.role]}</small>`}</span></span><button class="ib ghost" data-a="logout" aria-label="Cerrar sesión" title="Cerrar sesión">${I('logout')}</button></div></header><main>${views[V.tab]()}</main>`}
+function render(keep){
+ let snap=null,fid=null,fs=0;
+ if(keep){snap={};document.querySelectorAll('#app input[id],#app select[id]').forEach(e=>snap[e.id]=e.value);const a=document.activeElement;if(a&&a.id&&a.closest&&a.closest('#app')){fid=a.id;try{fs=a.selectionStart}catch(_){}}}
+ draw();
+ if(keep){for(const id in snap){const e=document.getElementById(id);if(!e||id==='q')continue;if(e.tagName==='SELECT'&&![...e.options].some(o=>o.value===snap[id]))continue;e.value=snap[id]}
+  if(fid){const e=document.getElementById(fid);if(e){e.focus();try{e.setSelectionRange(fs,fs)}catch(_){}}}}}
+async function boot(){
+ load();
+ if(/^https?:/.test(location.protocol)){try{const r=await fetch('/api/ping',{cache:'no-store'});const j=await r.json();if(j&&j.resto){NET=true;NAME=j.name||NAME}}catch(e){}}
+ if(NET){let ok=false;
+  if(TOKEN&&SESS){stub();ok=await pull();if(ok)connect()}
+  if(!ok){TOKEN=null;SESS=null;ss(TK,null);ss(SK,null);await loadPub();stub()}}
+ render();
+ if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
-load();render();
-if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+boot();
 </script>
 </body>
 </html>
